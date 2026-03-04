@@ -1,0 +1,42 @@
+package dam.code.dto;
+
+import dam.code.model.Libro;
+
+public class LibroDTO {
+
+    private String titulo;
+    private String autor;
+    private double precio;
+    private int stock;
+
+    public LibroDTO(String titulo, String autor, double precio, int stock) {
+        this.titulo = titulo;
+        this.autor = autor;
+        this.precio = precio;
+        this.stock = stock;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public String getAutor() {
+        return autor;
+    }
+
+    public double getPrecio() {
+        return precio;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public LibroDTO toDTO() {
+        return new LibroDTO(getTitulo(), getAutor(), getPrecio(), getStock());
+    }
+
+    public static Libro fromDTO(LibroDTO dto) {
+        return new Libro(dto.getTitulo(), dto.getAutor(), dto.getPrecio(), dto.getStock());
+    }
+}

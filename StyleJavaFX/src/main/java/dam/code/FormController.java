@@ -82,7 +82,7 @@ public class FormController {
                     Parent root = (Parent) fxmlLoader.load();
 
                     DashboarController dashboarController = fxmlLoader.getController();
-                    dashboarController.setMensajeBienvenida("Bienvenido a nuestra página principal, usuario: " + txtNombre.getText());
+                    dashboarController.setMensajeBienvenida("Bienvenido a nuestra página principal , usuario: " + txtNombre.getText());
 
                     txtNombre.getScene().setRoot(root);
 

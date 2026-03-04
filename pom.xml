@@ -10,6 +10,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>StyleJavaFX</module>
+        <module>Libreria</module>
     </modules>
 
     <properties>
