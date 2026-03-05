@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+// clase principal para correr el programa con interfaz incluida
 public class AppLibreria extends Application {
 
     @Override
