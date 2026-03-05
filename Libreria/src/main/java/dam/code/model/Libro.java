@@ -1,5 +1,6 @@
 package dam.code.model;
 
+import dam.code.dto.LibroDTO;
 import javafx.beans.property.*;
 
 public class Libro {
@@ -47,5 +48,23 @@ public class Libro {
 
     public IntegerProperty stockProperty() {
         return stock;
+    }
+
+    public LibroDTO toDTO() {
+        return new LibroDTO(
+                getTitulo(),
+                getAutor(),
+                getPrecio(),
+                getStock()
+        );
+    }
+
+    public static Libro fromDTO(LibroDTO dto) {
+        return new Libro(
+                dto.getTitulo(),
+                dto.getAutor(),
+                dto.getPrecio(),
+                dto.getStock()
+        );
     }
 }

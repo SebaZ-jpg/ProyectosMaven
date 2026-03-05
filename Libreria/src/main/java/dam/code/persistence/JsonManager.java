@@ -27,7 +27,7 @@ public class JsonManager {
         }
     }
 
-    public static List<LibroDTO> cargar() {
+    public static List<Libro> cargar() {
         try (Reader reader = new FileReader(FILE_PATH)) {
 
             Type listType = new TypeToken<List<LibroDTO>>(){}.getType();
@@ -35,6 +35,7 @@ public class JsonManager {
             List<LibroDTO> dtoList = GSON.fromJson(reader, listType);
 
             if(dtoList == null) return new ArrayList<>();
+
                 return dtoList.stream()
                         .map(Libro::fromDTO)
                         .toList();
