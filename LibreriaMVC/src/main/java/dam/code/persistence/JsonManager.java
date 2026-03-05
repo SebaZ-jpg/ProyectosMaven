@@ -4,13 +4,14 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import dam.code.dto.LibroDTO;
 import dam.code.model.Libro;
+import dam.code.repository.LibroRepository;
 
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JsonManager {
+public class JsonManager implements LibroRepository {
 
     private static final String FILE_PATH = "libros.json";
     private static final Gson GSON = new Gson();
@@ -36,9 +37,9 @@ public class JsonManager {
 
             if(dtoList == null) return new ArrayList<>();
 
-                return dtoList.stream()
-                        .map(Libro::fromDTO)
-                        .toList();
+            return dtoList.stream()
+                    .map(Libro::fromDTO)
+                    .toList();
 
         } catch (IOException e) {
             return new ArrayList<>();
