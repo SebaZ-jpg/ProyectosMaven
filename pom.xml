@@ -12,6 +12,7 @@
         <module>StyleJavaFX</module>
         <module>Libreria</module>
         <module>LibreriaMVC</module>
+        <module>Zoo</module>
     </modules>
 
     <properties>
