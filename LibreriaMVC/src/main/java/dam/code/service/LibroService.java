@@ -8,22 +8,23 @@ import javafx.collections.ObservableList;
 
 public class LibroService {
 
-    private final ObservableList<Libro> libros;
+    private final ObservableList<Libro> libros; // lista dinamica, soo vigila(guardia de seguridad), con el nombre libros
     private final LibroRepository repository;
 
     public LibroService(LibroRepository repository) {
-        this.repository = repository;
+        this.repository = repository; //lista de acciones
 
-        libros = FXCollections.observableArrayList(repository.cargar());
+        libros = FXCollections.observableArrayList(repository.cargar()); // inicilizar el libro, esto deriva del repository
+        //esto es un constructor
     }
 
     public ObservableList<Libro> getLibros() {
-        return libros;
+        return libros; // lista de libro que se mostrara
     }
 
     public void agregarLibro(Libro libro) {
         validarLibro(libro);
-        libros.add(libro);
+        libros.add(libro); // añade libro a la lista
         guardar();
     }
 
@@ -38,10 +39,10 @@ public class LibroService {
 
     private void validarLibro(Libro libro) throws LibroException {
 
-        if(libro.getTitulo() == null || libro.getTitulo().isEmpty()) {
-            throw new LibroException("El itulo es obligatorio");
+        if(libro.getTitulo() == null || libro.getTitulo().isBlank()) {
+            throw new LibroException("El titulo es obligatorio");
         }
-        if(libro.getAutor() == null || libro.getAutor().isEmpty()) {
+        if(libro.getAutor() == null || libro.getAutor().isBlank()) {
             throw new LibroException("El autor es obligatorio");
         }
         if (libro.getPrecio() <= 0) {
@@ -51,7 +52,7 @@ public class LibroService {
             throw new LibroException("El stock no puede ser negativo");
         }
 
-        boolean existe = libros.stream()
+        boolean existe = libros.stream() // pregunto si esto ya exsite, stream()anyMatch (coincidencia dentoer de mi lista)
                 .anyMatch(l -> l.getTitulo().equalsIgnoreCase(libro.getTitulo()));
         if (existe) {
             throw new LibroException("Ya existe un libro con ese titulo");
@@ -60,7 +61,7 @@ public class LibroService {
 
     private void guardar () {
         repository.guardar(libros);
-    }
+    } //guarda los libros
 
     public void actualizarPrecio(Libro libro, double nuevoPrecio)  throws LibroException {
         if (nuevoPrecio <= 0) {

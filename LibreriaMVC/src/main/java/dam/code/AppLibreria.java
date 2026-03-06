@@ -18,17 +18,17 @@ public class AppLibreria extends Application {
     public void start(Stage stage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/libreria_view.fxml"));
 
-        Parent root = fxmlLoader.load();
-        LibroController controller = fxmlLoader.getController();
+        Parent root = fxmlLoader.load(); // cargo mi vista
+        LibroController controller = fxmlLoader.getController(); //incializo el controlador lo del view
 
         LibroRepository repository = new JsonManager();
-        LibroService service = new LibroService(repository);
+        LibroService service = new LibroService(repository); //service al mismo nivel del controller y manda al respository(guarda los datos)
 
         controller.setLibroService(service);
 
-        stage.setScene(new Scene(root, 800, 600));
-        stage.setResizable(false);
-        stage.show();
+        stage.setScene(new Scene(root, 800, 600)); //tamaño del cuadro que vemos cuando se ejecuta
+        stage.setResizable(false); // no se puede modificar
+        stage.show(); // lo enseño
     }
 
     public static void main(String[] args) {

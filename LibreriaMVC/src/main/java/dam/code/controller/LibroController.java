@@ -40,18 +40,19 @@ public class LibroController {
     private void initialize() {
         prefWidthColumns();
 
+        //sirve pa rellenar, segun los valores
         colTitulo.setCellValueFactory(cellData -> cellData.getValue().tituloProperty());
         colAutor.setCellValueFactory(cellData -> cellData.getValue().autorProperty());
-        colPrecio.setCellValueFactory(cellData -> cellData.getValue().precioProperty().asObject());
+        colPrecio.setCellValueFactory(cellData -> cellData.getValue().precioProperty().asObject()); // asobject si es que no es tipo string
         colStock.setCellValueFactory(cellData -> cellData.getValue().stockProperty().asObject());
 
         tablaLibros.setEditable(true);
 
         //Precio Editable
         colPrecio.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
-        colPrecio.setOnEditCommit(event -> {
+        colPrecio.setOnEditCommit(event -> { // setOnEditCommitme crea un evento
             Libro libro = event.getRowValue();
-            double nuevoPrecio = event.getNewValue();
+            double nuevoPrecio = event.getNewValue(); //event.getNewValue voy a introducir el numero valor quue sera double
             try {
                 libroService.actualizarPrecio(libro, nuevoPrecio);
             } catch (LibroException e) {
@@ -73,9 +74,9 @@ public class LibroController {
     }
 
     private void prefWidthColumns() {
-        tablaLibros.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
+        tablaLibros.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS); // hacemos que las columnas sean redimencionables
 
-        colTitulo.prefWidthProperty().bind(tablaLibros.widthProperty().multiply(0.45));
+        colTitulo.prefWidthProperty().bind(tablaLibros.widthProperty().multiply(0.45)); // widthProperty propiedad del ancho de la tabla
         colAutor.prefWidthProperty().bind(tablaLibros.widthProperty().multiply(0.30));
         colPrecio.prefWidthProperty().bind(tablaLibros.widthProperty().multiply(0.15));
         colStock.prefWidthProperty().bind(tablaLibros.widthProperty().multiply(0.10));
@@ -87,15 +88,15 @@ public class LibroController {
             Libro libro = new Libro(
                     txtTitulo.getText(),
                     txtAutor.getText(),
-                    Double.parseDouble(txtPrecio.getText()),
+                    Double.parseDouble(txtPrecio.getText()), // guardame en souble todo lo que puedas transofmra de este texto
                     Integer.parseInt(txtStock.getText())
             );
 
-            libroService.agregarLibro(libro);
+            libroService.agregarLibro(libro); // si todo esta bien se lo pasa al service y si no muestra el error que debe tener el service
 
             limpiarCampos();
 
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e){ // unica validacion que dara el controlador
             mostrarError("Precio y stock deben ser numeros validos");
         } catch (LibroException e) {
             mostrarError(e.getMessage());
@@ -118,9 +119,9 @@ public class LibroController {
     }
 
     @FXML
-    private void eliminarLibro(){
+    private void eliminarLibro(){ // acction del view
 
-        Libro seleccionado = tablaLibros.getSelectionModel().getSelectedItem();
+        Libro seleccionado = tablaLibros.getSelectionModel().getSelectedItem(); // seleccion del libro,
 
         if (seleccionado != null){
             try {
