@@ -15,7 +15,7 @@ public class JsonManager {
     private static final String FILE_PATH = "libros.json";
     private static final Gson GSON = new Gson();
 
-    public void guardar(List<Libro> libros) {
+    public static void guardar(List<Libro> libros) {
         List<LibroDTO> dtoList = libros.stream()
                 .map(Libro::toDTO)
                 .toList();
@@ -27,7 +27,7 @@ public class JsonManager {
         }
     }
 
-    public List<Libro> cargar() {
+    public static List<Libro> cargar() {
         try (Reader reader = new FileReader(FILE_PATH)) {
 
             Type listType = new TypeToken<List<LibroDTO>>(){}.getType();
