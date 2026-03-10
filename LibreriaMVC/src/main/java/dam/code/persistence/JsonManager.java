@@ -11,6 +11,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+    /*Implementa LibroRepository usando Gson para leer/escribir JSON.*/
+
 public class JsonManager implements LibroRepository {
 
     private static final String FILE_PATH = "libros.json";
@@ -22,6 +24,8 @@ public class JsonManager implements LibroRepository {
                 .toList();
 
         try (Writer writer = new FileWriter(FILE_PATH)) {
+
+            // 2. Escribe el JSON en el archivo
             GSON.toJson(dtoList, writer); //te doy una lista y conviertelos a json
         } catch (IOException e) {
             e.printStackTrace(); // muestra error pero sigue ejecutandose

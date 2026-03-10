@@ -6,6 +6,8 @@ import dam.code.repository.LibroRepository;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+// El cerebro de la aplicación
+
 public class LibroService {
 
     private final ObservableList<Libro> libros; // lista dinamica, soo vigila(guardia de seguridad), con el nombre libros
@@ -15,6 +17,7 @@ public class LibroService {
         this.repository = repository; //lista de acciones
 
         libros = FXCollections.observableArrayList(repository.cargar()); // inicilizar el libro, esto deriva del repository
+        //       ↑ carga desde JSON y mete los libros en un ObservableList
         //esto es un constructor
     }
 
@@ -23,9 +26,9 @@ public class LibroService {
     }
 
     public void agregarLibro(Libro libro) {
-        validarLibro(libro);
-        libros.add(libro); // añade libro a la lista
-        guardar();
+        validarLibro(libro); // lanza LibroException si algo falla
+        libros.add(libro); // añade libro a la lista // la tabla se actualiza sola (ObservableList)
+        guardar(); // persiste en JSON
     }
 
     public void eliminarLibro(Libro libro) throws LibroException {

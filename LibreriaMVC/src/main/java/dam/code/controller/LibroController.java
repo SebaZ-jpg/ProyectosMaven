@@ -18,6 +18,16 @@ import javafx.util.converter.IntegerStringConverter;
 
 public class LibroController {
 
+    /*
+    @FXML le dice a JavaFX que esa variable está vinculada a un elemento del archivo .fxml (el diseño visual).
+    Sin esta anotación, el campo sería null en tiempo de ejecución.
+
+    TableView<Libro> → la tabla completa que muestra libros
+    TableColumn<Libro, String> → columna cuyo tipo de objeto es Libro y cuyo valor mostrado es String
+    TableColumn<Libro, Double> / <Libro, Integer> → columnas numéricas
+    TextField → campos de texto del formulario donde el usuario escribe datos
+    */
+
     @FXML private TableView<Libro> tablaLibros;
     @FXML private TableColumn<Libro,String> colTitulo;
     @FXML private TableColumn<Libro,String> colAutor;
@@ -29,6 +39,13 @@ public class LibroController {
     @FXML private TextField txtPrecio;
     @FXML private TextField txtStock;
 
+    /*
+    LibroService contiene la lógica de negocio (agregar, eliminar, validar...). El controlador no hace esa lógica
+    directamente, la delega al servicio. Esto es buena práctica.
+    setItems(libroService.getLibros()) conecta la tabla con la lista de libros. Si esa lista es un ObservableList,
+    la tabla se actualiza automáticamente cuando cambia la lista.
+    */
+
     private LibroService libroService;
 
     public void setLibroService(LibroService libroService) {
@@ -36,9 +53,21 @@ public class LibroController {
         tablaLibros.setItems(libroService.getLibros());
     }
 
+    /*
+    JavaFX llama a este método automáticamente justo después de cargar el .fxml. Es el equivalente a un
+    constructor para el controlador.
+    */
+
     @FXML
     private void initialize() {
         prefWidthColumns();
+
+        /*
+        cellData representa cada celda/fila
+        cellData.getValue() devuelve el objeto Libro de esa fila
+        .tituloProperty() devuelve una StringProperty (tipo especial de JavaFX que permite binding)
+        .asObject() es necesario para convertir DoubleProperty/IntegerProperty a sus tipos genéricos boxed (Double, Integer)
+        * */
 
         //sirve pa rellenar, segun los valores
         colTitulo.setCellValueFactory(cellData -> cellData.getValue().tituloProperty());
@@ -60,6 +89,14 @@ public class LibroController {
             }
         });
 
+        /*
+        setCellFactory(TextFieldTableCell...)Convierte la celda en un campo de texto al hacer doble clic
+        DoubleStringConverterConvierte entre String (lo que se escribe) y Double (lo que necesita el modelo)
+        setOnEditCommitSe ejecuta cuando el usuario confirma la edición (pulsa Enter)
+        event.getRowValue()Obtiene el Libro de la fila editada
+        event.getNewValue()Obtiene el nuevo valor introducido
+        */
+
         //Stock editable
         colStock.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
         colStock.setOnEditCommit(event -> {
@@ -73,6 +110,12 @@ public class LibroController {
         });
     }
 
+    /*
+    CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS → las columnas llenan todo el ancho de la tabla
+    .bind(...) → vinculación reactiva: si la ventana cambia de tamaño, las columnas se reajustan automáticamente
+    Los porcentajes suman 1.0 (45% + 30% + 15% + 10% = 100%)
+    */
+
     private void prefWidthColumns() {
         tablaLibros.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS); // hacemos que las columnas sean redimencionables
 
@@ -81,6 +124,15 @@ public class LibroController {
         colPrecio.prefWidthProperty().bind(tablaLibros.widthProperty().multiply(0.15));
         colStock.prefWidthProperty().bind(tablaLibros.widthProperty().multiply(0.10));
     }
+
+    /*
+    Lee los textos de los TextField
+    Double.parseDouble / Integer.parseInt convierten String → número. Si el texto no es un número, lanza NumberFormatException
+    Crea un objeto Libro con esos datos
+    Lo pasa al servicio para que lo valide y agregue
+    Si todo va bien, limpia los campos
+    Si hay error de formato → muestra alerta. Si hay error de negocio (LibroException) → muestra su mensaje
+    */
 
     @FXML
     private void addLibro(){
@@ -103,6 +155,11 @@ public class LibroController {
         }
     }
 
+    /*
+    Crea un diálogo modal de error de JavaFX. showAndWait() es importante:
+    pausa la ejecución hasta que el usuario cierra la ventana.
+    */
+
     private void mostrarError(String mensaje) {
         Alert alerta = new Alert(Alert.AlertType.ERROR);
         alerta.setTitle("Error");
@@ -117,6 +174,12 @@ public class LibroController {
         txtPrecio.clear();
         txtStock.clear();
     }
+
+    /*
+    - `getSelectionModel().getSelectedItem()` → obtiene el libro que el usuario tiene seleccionado en la tabla
+    - El `if (seleccionado != null)` evita errores si no hay nada seleccionado
+    - Delega la eliminación al servicio, que puede lanzar `LibroException` si hay alguna restricción
+    */
 
     @FXML
     private void eliminarLibro(){ // acction del view
