@@ -13,6 +13,7 @@
         <module>Libreria</module>
         <module>LibreriaMVC</module>
         <module>JavaFX</module>
+        <module>Gestion_Peliculas</module>
     </modules>
 
     <properties>

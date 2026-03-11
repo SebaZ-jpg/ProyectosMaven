@@ -50,6 +50,7 @@ public class Libro {
         return stock;
     }
 
+
     public void setPrecio(double precio) {
         this.precio.set(precio);
     }
