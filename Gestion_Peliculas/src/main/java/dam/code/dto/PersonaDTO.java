@@ -8,4 +8,4 @@ public class PersonaDTO {
     private String email;
 }
 
-    public PersonaDTO(String titulo, String autor);
+
