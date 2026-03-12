@@ -30,8 +30,12 @@ public class PeliculaService {
     private void validarPelicula(Pelicula pelicula) throws PeliculasException {
 
         if(pelicula.getTitulo() == null || pelicula.getId().isBlank()) {
-            throw new PeliculasException("El titulo no puede ser nulo");
+            throw new PeliculasException("El titulo es obligatorio");
 
+        }
+
+        if (pelicula.getDirector() == null || pelicula.getId().isBlank()) {
+            throw new PeliculasException("El director es obligatorio");
         }
 
     }
