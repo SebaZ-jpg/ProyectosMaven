@@ -34,7 +34,7 @@ public class LibroService {
     public void eliminarLibro(Libro libro) throws LibroException {
 
         if (libro == null) {
-            throw new LibroException("debe seleeccionar un loibro");
+            throw new LibroException("debe seleccionar un libro");
         }
         libros.remove(libro);
     guardar();
@@ -55,7 +55,7 @@ public class LibroService {
             throw new LibroException("El stock no puede ser negativo");
         }
 
-        boolean existe = libros.stream() // pregunto si esto ya exsite, stream()anyMatch (coincidencia dentoer de mi lista)
+        boolean existe = libros.stream() // pregunto si esto ya exsite, stream()anyMatch (coincidencia dentro de mi lista)
                 .anyMatch(l -> l.getTitulo().equalsIgnoreCase(libro.getTitulo()));
         if (existe) {
             throw new LibroException("Ya existe un libro con ese titulo");

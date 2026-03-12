@@ -7,6 +7,7 @@ package dam.code.model;
  Email
 */
 
+import dam.code.dto.PersonaDTO;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;

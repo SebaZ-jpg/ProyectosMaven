@@ -16,9 +16,7 @@ public class LibroDTO {
         this.stock = stock;
     }
 
-    public String getTitulo() {
-        return titulo;
-    }
+    public String getTitulo() { return titulo; }
 
     public String getAutor() {
         return autor;
