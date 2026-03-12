@@ -42,7 +42,7 @@ public class PeliculaService {
             throw new PeliculasException("El director es obligatorio");
         }
 
-        if (pelicula.getDuracion() == null || pelicula.getDuracion() {
+        if (pelicula.getDuracion() <= 0) {
             throw new PeliculasException("El duracion es obligatoria");
         }
 
@@ -50,10 +50,20 @@ public class PeliculaService {
             throw new PeliculasException("La fecha publicacion es obligatoria");
         }
 
+        boolean existe = pelicula.stream()
+                .anyMatch(p -> p.get)
+
         private void guardar() {
             repository.guardar(peliculas);
         }
 
+        public void actualizarDuracion(Pelicula pelicula, int nuevaDuracion) throw PeliculasException {
+            if (nuevaDuracion <= 0){
+                throw new PeliculasException("El duracion debe ser mayor a 0");
+            }
+            Pelicula.setDuracion(nuevaDuracion);
+            guardar();
+        }
 
     }
 
