@@ -14,17 +14,20 @@ import java.util.*;
 
 public class JsonManager {
 
-    private static final String ARCHIVO_PELICULAS = "peliculas.json";
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private static final String ARCHIVO_PELICULAS = "data/visualizaciones/peliculas.json";
+    private static final Gson GSON = new GsonBuilder()
+            .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+            .setPrettyPrinting()
+            .create();
 
     // ─── PELÍCULAS ────────────────────────────────────────────────
 
     public static Map<Pelicula, Integer> cargarPeliculas() {
-        File f = new File(ARCHIVO_PELICULAS);
-        if (!f.exists()) return new LinkedHashMap<>();
-        try (Reader r = new FileReader(f)) {
+        File file = new File(ARCHIVO_PELICULAS);
+        if (!file.exists()) return new LinkedHashMap<>();
+        try (Reader reader = new FileReader(file)) {
             Type tipo = new TypeToken<List<Map<String, Object>>>(){}.getType();
-            List<Map<String, Object>> lista = GSON.fromJson(r, tipo);
+            List<Map<String, Object>> lista = GSON.fromJson(reader, tipo);
             if (lista == null) return new LinkedHashMap<>();
             Map<Pelicula, Integer> mapa = new LinkedHashMap<>();
             for (Map<String, Object> item : lista) {
@@ -32,9 +35,10 @@ public class JsonManager {
                         (String) item.get("id"),
                         (String) item.get("titulo"),
                         (String) item.get("director"),
-                        ((Number) item.get("duracion")).doubleValue(),
+                        ((Number) item.get("duracion")).intValue(),
                         LocalDate.parse((String) item.get("fechaPublicacion"))
                 );
+
                 int vis = ((Number) item.get("visualizaciones")).intValue();
                 mapa.put(p, vis);
             }
@@ -65,14 +69,14 @@ public class JsonManager {
     // ─── VISUALIZACIONES POR USUARIO ─────────────────────────────
 
     public static void guardarVisualizacionUsuario(Pelicula p, Persona usuario) throws IOException {
-        String nombreArchivo = "visualizaciones_" + usuario.getDni() + ".json";
-        File f = new File(nombreArchivo);
+        String nombreArchivo = "data/visualizaciones/" + usuario.getDni() + ".json";
+        File file = new File(nombreArchivo);
 
         List<Map<String, String>> lista = new ArrayList<>();
-        if (f.exists()) {
-            try (Reader r = new FileReader(f)) {
+        if (file.exists()) {
+            try (Reader reader = new FileReader(file)) {
                 Type tipo = new TypeToken<List<Map<String, String>>>(){}.getType();
-                List<Map<String, String>> existentes = GSON.fromJson(r, tipo);
+                List<Map<String, String>> existentes = GSON.fromJson(reader, tipo);
                 if (existentes != null) lista.addAll(existentes);
             }
         }
@@ -84,7 +88,7 @@ public class JsonManager {
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         lista.add(entrada);
 
-        try (Writer w = new FileWriter(f)) {
+        try (Writer w = new FileWriter(file)) {
             GSON.toJson(lista, w);
         }
     }
@@ -95,9 +99,9 @@ public class JsonManager {
 
     @SuppressWarnings("unchecked")
     public static Map<Persona, String> cargarUsuarios() {
-        File f = new File(ARCHIVO_USUARIOS);
-        if (!f.exists()) return new HashMap<>();
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f))) {
+        File file = new File(ARCHIVO_USUARIOS);
+        if (!file.exists()) return new HashMap<>();
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
             return (Map<Persona, String>) ois.readObject();
         } catch (Exception e) {
             return new HashMap<>();

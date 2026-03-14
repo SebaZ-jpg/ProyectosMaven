@@ -9,12 +9,12 @@ public class Pelicula implements Serializable {
     private String id;              // 3 letras + 2 números
     private String titulo;
     private String director;
-    private Double duracion;
+    private Integer duracion;
     private LocalDate fechaPublicacion;
 
     public Pelicula() {}
 
-    public Pelicula(String id, String titulo, String director, Double duracion, LocalDate fechaPublicacion) {
+    public Pelicula(String id, String titulo, String director, Integer duracion, LocalDate fechaPublicacion) {
         this.id = id;
         this.titulo = titulo;
         this.director = director;
@@ -22,20 +22,45 @@ public class Pelicula implements Serializable {
         this.fechaPublicacion = fechaPublicacion;
     }
 
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    public String getId() {
+        return id;
+    }
 
-    public String getTitulo() { return titulo; }
-    public void setTitulo(String titulo) { this.titulo = titulo; }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-    public String getDirector() { return director; }
-    public void setDirector(String director) { this.director = director; }
+    public String getTitulo() {
+        return titulo;
+    }
 
-    public Double getDuracion() { return duracion; }
-    public void setDuracion(Double duracion) { this.duracion = duracion; }
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
 
-    public LocalDate getFechaPublicacion() { return fechaPublicacion; }
-    public void setFechaPublicacion(LocalDate fecha) { this.fechaPublicacion = fecha; }
+    public String getDirector() {
+        return director;
+    }
+
+    public void setDirector(String director) {
+        this.director = director;
+    }
+
+    public Integer getDuracion() {
+        return duracion;
+    }
+
+    public void setDuracion(Integer duracion) {
+        this.duracion = duracion;
+    }
+
+    public LocalDate getFechaPublicacion() {
+        return fechaPublicacion;
+    }
+
+    public void setFechaPublicacion(LocalDate fecha) {
+        this.fechaPublicacion = fecha;
+    }
 
     @Override
     public boolean equals(Object o) {

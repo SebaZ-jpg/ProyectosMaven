@@ -1,8 +1,7 @@
 package dam.code.controller;
 
 import dam.code.AppPelicula;
-import dam.code.dto.PeliculaDTO;
-import dam.code.exceptions.PeliculasException;
+import dam.code.exceptions.PeliculaException;
 import dam.code.model.Pelicula;
 import dam.code.model.Persona;
 import dam.code.service.PeliculaService;
@@ -154,7 +153,7 @@ public class PeliculasController implements Initializable {
             LocalDate fecha = dpFecha.getValue();
 
             if (titulo.isBlank() || director.isBlank() || durStr.isBlank() || fecha == null) {
-                throw new PeliculasException("Todos los campos son obligatorios.");
+                throw new PeliculaException("Todos los campos son obligatorios.");
             }
 
             double duracion = Double.parseDouble(durStr);
@@ -166,7 +165,7 @@ public class PeliculasController implements Initializable {
 
         } catch (NumberFormatException e) {
             mostrarError("La duración debe ser un número válido.");
-        } catch (PeliculasException e) {
+        } catch (PeliculaException e) {
             mostrarError(e.getMessage());
         }
     }
@@ -178,7 +177,7 @@ public class PeliculasController implements Initializable {
             service.editarTitulo(fila.getPelicula(), tfNuevoTitulo.getText().trim());
             recargarTabla();
             mostrarInfo("Título actualizado.");
-        } catch (PeliculasException e) {
+        } catch (PeliculaException e) {
             mostrarError(e.getMessage());
         }
     }
@@ -190,7 +189,7 @@ public class PeliculasController implements Initializable {
             service.editarFecha(fila.getPelicula(), dpNuevaFecha.getValue());
             recargarTabla();
             mostrarInfo("Fecha actualizada.");
-        } catch (PeliculasException e) {
+        } catch (PeliculaException e) {
             mostrarError(e.getMessage());
         }
     }
@@ -207,7 +206,7 @@ public class PeliculasController implements Initializable {
                 service.eliminar(fila.getPelicula());
                 recargarTabla();
             }
-        } catch (PeliculasException e) {
+        } catch (PeliculaException e) {
             mostrarError(e.getMessage());
         }
     }
@@ -226,7 +225,7 @@ public class PeliculasController implements Initializable {
                 recargarTabla();
                 mostrarInfo("Visualización registrada.");
             }
-        } catch (PeliculasException e) {
+        } catch (PeliculaException e) {
             mostrarError(e.getMessage());
         }
     }
@@ -239,9 +238,9 @@ public class PeliculasController implements Initializable {
 
     // ── Helpers ────────────────────────────────────────
 
-    private FilaPelicula getSeleccionada() throws PeliculasException {
+    private FilaPelicula getSeleccionada() throws PeliculaException {
         FilaPelicula fila = tablaPeliculas.getSelectionModel().getSelectedItem();
-        if (fila == null) throw new PeliculasException("Selecciona una película de la tabla.");
+        if (fila == null) throw new PeliculaException("Selecciona una película de la tabla.");
         return fila;
     }
 
