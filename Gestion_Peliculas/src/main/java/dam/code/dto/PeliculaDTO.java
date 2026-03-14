@@ -1,40 +1,37 @@
 package dam.code.dto;
 
+import java.time.LocalDate;
+
 public class PeliculaDTO {
 
     private String id;
     private String titulo;
     private String director;
-    private double duracion;
-    private String fecha_publicacion;
+    private Double duracion;
+    private LocalDate fechaPublicacion;
 
-    public PeliculaDTO(String id, String titulo, String director, double duracion, String fecha_publicacion) {
+    public PeliculaDTO() {}
+
+    public PeliculaDTO(String id, String titulo, String director, Double duracion, LocalDate fechaPublicacion) {
         this.id = id;
         this.titulo = titulo;
         this.director = director;
         this.duracion = duracion;
-        this.fecha_publicacion = fecha_publicacion;
+        this.fechaPublicacion = fechaPublicacion;
     }
 
-    public String getId() {
-        return id;
-    }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
-    public String getTitulo() {
-        return titulo;
-    }
+    public String getTitulo() { return titulo; }
+    public void setTitulo(String titulo) { this.titulo = titulo; }
 
-    public String getDirector() {
-        return director;
-    }
+    public String getDirector() { return director; }
+    public void setDirector(String director) { this.director = director; }
 
-    public double getDuracion() {
-        return duracion;
+    public Double getDuracion() { return duracion; }
+    public void setDuracion(Double duracion) { this.duracion = duracion; }
 
-    }
-
-    public String getFecha_publicacion() {
-        return fecha_publicacion;
-    }
-
+    public LocalDate getFechaPublicacion() { return fechaPublicacion; }
+    public void setFechaPublicacion(LocalDate fechaPublicacion) { this.fechaPublicacion = fechaPublicacion; }
 }

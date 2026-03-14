@@ -1,97 +1,57 @@
 package dam.code.model;
 
-import dam.code.dto.PeliculaDTO;
-import javafx.beans.property.*;/*
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Objects;
 
-Id (String - 3 letras y 2 números)
-Título (String)
-Director (String)
-Duración (Double)
-Fecha de publicación (LocalDate)
+public class Pelicula implements Serializable {
 
-*/
-public class Pelicula {
+    private String id;              // 3 letras + 2 números
+    private String titulo;
+    private String director;
+    private Double duracion;
+    private LocalDate fechaPublicacion;
 
+    public Pelicula() {}
 
-private final StringProperty id;
-private final StringProperty titulo;
-private final StringProperty director;
-private final DoubleProperty duracion;
-private final StringProperty fecha_publicacion;
-
-    public Pelicula(String id, String titulo, String director, Double duracion, String fecha_publicacion) {
-        this.id = new SimpleStringProperty(id);
-        this.titulo = new SimpleStringProperty(titulo);
-        this.director = new SimpleStringProperty(director);
-        this.duracion = new SimpleDoubleProperty(duracion);
-        this.fecha_publicacion = new SimpleStringProperty(fecha_publicacion);
+    public Pelicula(String id, String titulo, String director, Double duracion, LocalDate fechaPublicacion) {
+        this.id = id;
+        this.titulo = titulo;
+        this.director = director;
+        this.duracion = duracion;
+        this.fechaPublicacion = fechaPublicacion;
     }
 
-    public String getId() {
-        return id.get();
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+
+    public String getTitulo() { return titulo; }
+    public void setTitulo(String titulo) { this.titulo = titulo; }
+
+    public String getDirector() { return director; }
+    public void setDirector(String director) { this.director = director; }
+
+    public Double getDuracion() { return duracion; }
+    public void setDuracion(Double duracion) { this.duracion = duracion; }
+
+    public LocalDate getFechaPublicacion() { return fechaPublicacion; }
+    public void setFechaPublicacion(LocalDate fecha) { this.fechaPublicacion = fecha; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Pelicula)) return false;
+        Pelicula pelicula = (Pelicula) o;
+        return Objects.equals(id, pelicula.id);
     }
 
-    public String getTitulo() {
-        return titulo.get();
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
-    public String getDirector() {
-        return director.get();
+    @Override
+    public String toString() {
+        return titulo + " (" + id + ")";
     }
-
-    public Double getDuracion() {
-        return duracion.get();
-    }
-
-    public String getFecha_publicacion() {
-        return fecha_publicacion.get();
-    }
-
-    //getter properties
-    public StringProperty idProperty() {
-        return id;
-    }
-    public StringProperty tituloProperty() {
-        return titulo;
-    }
-    public StringProperty directorProperty() {
-        return director;
-    }
-    public DoubleProperty duracionProperty() {
-        return duracion;
-    }
-    public StringProperty fecha_publicacionProperty() {
-        return fecha_publicacion;
-    }
-
-
-    public void setDuracion(double duracion) {
-        this.duracion.set(duracion);
-    }
-
-    public void setFecha_publicacion(String fecha_publicacion) {
-    this.fecha_publicacion.set(fecha_publicacion);
-    }
-
-    public PeliculaDTO toDTO() {
-        return new PeliculaDTO(
-          getId(),
-          getTitulo(),
-          getDirector(),
-          getDuracion(),
-          getFecha_publicacion()
-        );
-    }
-
-    public static Pelicula fromDTO(PeliculaDTO dto) {
-        return new Pelicula(
-            dto.getId(),
-            dto.getTitulo(),
-            dto.getDirector(),
-            dto.getDuracion(),
-            dto.getFecha_publicacion()
-        );
-    }
-
 }
-

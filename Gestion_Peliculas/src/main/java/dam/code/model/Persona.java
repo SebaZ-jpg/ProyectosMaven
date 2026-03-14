@@ -1,76 +1,51 @@
 package dam.code.model;
 
-/*
- DNI (String - 8 números y 1 letra)
- Nombre
- Apellido
- Email
-*/
+import java.io.Serializable;
+import java.util.Objects;
 
-import dam.code.dto.PersonaDTO;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+public class Persona implements Serializable {
 
-public class Persona {
+    private String dni;       // 8 números + 1 letra
+    private String nombre;
+    private String apellido;
+    private String email;
 
-    private final  StringProperty dni;
-    private final StringProperty nombre;
-    private final StringProperty apellido;
-    private final StringProperty email;
+    public Persona() {}
 
     public Persona(String dni, String nombre, String apellido, String email) {
-        this.dni = new SimpleStringProperty(dni);
-        this.nombre = new SimpleStringProperty(nombre);
-        this.apellido = new SimpleStringProperty(apellido);
-        this.email = new SimpleStringProperty(email);
+        this.dni = dni;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.email = email;
     }
 
-    public String getDni() {
-        return dni.get();
+    public String getDni() { return dni; }
+    public void setDni(String dni) { this.dni = dni; }
+
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
+
+    public String getApellido() { return apellido; }
+    public void setApellido(String apellido) { this.apellido = apellido; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Persona)) return false;
+        Persona persona = (Persona) o;
+        return Objects.equals(dni, persona.dni);
     }
 
-    public String getNombre() {
-        return nombre.get();
+    @Override
+    public int hashCode() {
+        return Objects.hash(dni);
     }
 
-    public String getApellido() {
-        return apellido.get();
-    }
-
-    public String getEmail() {
-        return email.get();
-    }
-
-    //getters properties
-    public StringProperty dniProperty() {
-        return dni;
-    }
-    public StringProperty nombreProperty() {
-        return nombre;
-    }
-    public StringProperty apellidoProperty() {
-        return apellido;
-    }
-    public StringProperty emailProperty() {
-        return email;
-    }
-
-    public PersonaDTO toDTO(){
-        return new PersonaDTO(
-                getDni(),
-                getNombre(),
-                getApellido(),
-                getEmail()
-        );
-    }
-
-    public static Persona fromFTO(PersonaDTO dto){
-        return new Persona(
-                dto.getdni(),
-                dto.getnombre(),
-                dto.getapellido(),
-                dto.getemail()
-        );
+    @Override
+    public String toString() {
+        return nombre + " " + apellido + " (" + dni + ")";
     }
 }
