@@ -1,5 +1,10 @@
 package dam.code.service;
 
+import dam.code.exceptions.PersonaException;
+import dam.code.model.Persona;
+
+import java.util.Map;
+
 public class RegistroService {
 
     private Map<Persona, String> registros;
@@ -13,10 +18,15 @@ public class RegistroService {
     }
 
     public Persona login(String dni, String password) throws PersonaException {
-        // buscar + verificar + devolver Persona
+        return null;
     }
+        // buscar + verificar + devolver Persona
+
 
     public boolean existenUsuarios() {
-        // devuelve si el mapa no está vacío
+
+        return false;
     }
+        // devuelve si el mapa no está vacío
+
 }

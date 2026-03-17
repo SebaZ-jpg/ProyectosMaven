@@ -156,7 +156,7 @@ public class PeliculasController implements Initializable {
                 throw new PeliculaException("Todos los campos son obligatorios.");
             }
 
-            double duracion = Double.parseDouble(durStr);
+            int duracion = Integer.parseInt(durStr);
             Pelicula p = new Pelicula(id, titulo, director, duracion, fecha);
             service.agregar(p);
             limpiarFormulario();
