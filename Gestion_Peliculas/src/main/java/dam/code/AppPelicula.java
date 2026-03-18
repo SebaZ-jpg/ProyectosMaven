@@ -20,9 +20,9 @@ public class AppPelicula extends Application {
 
         RegistroService registroService = new RegistroService();
         if (!registroService.existenUsuarios()) {
-            mostrarVista("/dam.code/view/inicio_view.fxml");
-        } else {
             mostrarVista("/dam.code/view/registro_view.fxml");
+        } else {
+            mostrarVista("/dam.code/view/login_view.fxml");
         }
 
         primaryStage.show();

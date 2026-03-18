@@ -1,23 +1,28 @@
 package dam.code.persistence;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 
-import com.google.gson.*;
-
-import java.lang.reflect.Type;
+import java.io.IOException;
 import java.time.LocalDate;
 
-public class LocalDateAdapter implements JsonSerializer<LocalDate>, JsonDeserializer<LocalDate> {
+public class LocalDateAdapter extends TypeAdapter<LocalDate> {
 
     @Override
-    public JsonElement serialize(LocalDate src, Type type, JsonSerializationContext context) {
-        return new JsonPrimitive(src.toString());
-        // convierte el LocalDate a un String con .toString()
-        // devuélvelo como new JsonPrimitive(...)
+    public void write(JsonWriter out, LocalDate value) throws IOException {
+
+        if (value == null) {
+            out.nullValue();
+        } else {
+            out.value(value.toString());
+        }
     }
 
+
+
     @Override
-    public LocalDate deserialize(JsonElement json, Type type, JsonDeserializationContext context) {
-        return LocalDate.parse(json.getAsString());
-        // obtén el texto con json.getAsString()
-        // conviértelo con LocalDate.parse(...)
+    public LocalDate read(JsonReader in) throws IOException {
+        String date = in.nextString();
+        return LocalDate.parse(date);
     }
 }

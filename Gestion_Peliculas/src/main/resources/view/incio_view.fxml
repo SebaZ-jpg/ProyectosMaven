@@ -7,36 +7,18 @@
       alignment="CENTER"
       stylesheets="/styles/styles.css"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="dam.code.controller.LibroController">
+      fx:controller="dam.code.controller.InicioController">
 
-    <Label text="Gestion de Libreria" styleClass="title"/>
+    <Label text="Iniciar sesión" style="-fx-font-size: 20;"/>
 
-    <HBox spacing="10" alignment="CENTER">
-        <TextField fx:id="dni" promptText="Dni"/>
+    <Label text="DNI"/>
+    <TextField fx:id="tfDni" promptText="12345678A"/>
 
-        <TextField fx:id="txtNombre" promptText="Nombre"/>
+    <Label text="Contraseña"/>
+    <PasswordField fx:id="pfPassword" promptText="Contraseña"/>
 
-        <TextField fx:id="txtApellido" promptText="Apellido"/>
+    <Button text="Entrar" onAction="#onLogin" maxWidth="Infinity"/>
+    <Button text="¿No tienes cuenta? Regístrate" onAction="#onIrARegistro"
+            maxWidth="Infinity"/>
 
-        <TextField fx:id="txtEmail" promptText="Email"/>
-
-        <Button text="Añadir Pelicula" onAction="#addPelicula"/>
-
-    </HBox>
-
-    <TableView fx:id="tablaPeliculas" VBox.vgrow="ALWAYS">
-
-        <columns>
-            <TableColumn fx:id="colDni" text="Dni"/>
-
-            <TableColumn fx:id="colNombre" text="Nombre"/>
-
-            <TableColumn fx:id="colPrecio" text="Apellido"/>
-
-            <TableColumn fx:id="colEmail" text="Email"/>
-        </columns>
-
-    </TableView>
-
-    <Button text="Eliminar Pelicula" onAction="#eliminarPelicula" styleClass="button-danger"/>
 </VBox>

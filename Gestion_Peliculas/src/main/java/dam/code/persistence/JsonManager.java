@@ -53,12 +53,11 @@ public class JsonManager {
         for (Map.Entry<Pelicula, Integer> entry : visualizaciones.entrySet()) {
             Pelicula p = entry.getKey();
             Map<String, Object> item = new LinkedHashMap<>();
-            item.put("id", p.getId());
-            item.put("titulo", p.getTitulo());
-            item.put("director", p.getDirector());
-            item.put("duracion", p.getDuracion());
-            item.put("fechaPublicacion", p.getFechaPublicacion().toString());
-            item.put("visualizaciones", entry.getValue());
+            item.put("id", p.getid());
+            item.put("titulo", p.getitulo());
+            item.put("director", p.getdirector());
+            item.put("duracion", p.getduracion());
+            item.put("fechaPublicacion", p.getfechaPublicacion().toString());
             lista.add(item);
         }
         try (Writer w = new FileWriter(ARCHIVO_PELICULAS)) {
@@ -82,8 +81,8 @@ public class JsonManager {
         }
 
         Map<String, String> entrada = new LinkedHashMap<>();
-        entrada.put("peliculaId", p.getId());
-        entrada.put("titulo", p.getTitulo());
+        entrada.put("peliculaId", p.getid());
+        entrada.put("titulo", p.getitulo());
         entrada.put("fechaVisualizacion",
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         lista.add(entrada);

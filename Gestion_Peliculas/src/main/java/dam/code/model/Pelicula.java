@@ -43,23 +43,23 @@ public class Pelicula implements Serializable {
         return fechaPublicacion.get();
     }
 
-    public StringProperty getId() {
+    public StringProperty idProperty() {
         return id;
     }
 
-    public StringProperty getTitulo() {
+    public StringProperty tituloProperty() {
         return titulo;
     }
 
-    public StringProperty getDirector() {
+    public StringProperty directorProperty() {
         return director;
     }
 
-    public IntegerProperty getDuracion() {
+    public IntegerProperty duracionProperty() {
         return duracion;
     }
 
-    public ObjectProperty<LocalDate> getFechaPublicacion() {
+    public ObjectProperty<LocalDate> fechaProperty() {
         return fechaPublicacion;
     }
 

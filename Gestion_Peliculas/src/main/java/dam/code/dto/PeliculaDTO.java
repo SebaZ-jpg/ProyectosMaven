@@ -39,4 +39,9 @@ public class PeliculaDTO {
     public LocalDate getFechaPublicacion() {
         return fechaPublicacion;
     }
+
+    @Override
+    public String toString() {
+        return titulo + " (" + id + ")";
+    }
 }

@@ -10,16 +10,15 @@ import java.util.Map;
 
 public class InicioController {
 
-    @FXML private TextField tfDni;
+    @FXML private TextField     tfDni;
     @FXML private PasswordField pfPassword;
 
-    // Guardamos el usuario logueado en memoria para pasarlo al dashboard
     private static Persona usuarioActual;
 
     @FXML
     private void onLogin() {
         try {
-            String dni = tfDni.getText().trim();
+            String dni      = tfDni.getText().trim();
             String password = pfPassword.getText();
 
             if (dni.isBlank() || password.isBlank()) {
@@ -53,22 +52,16 @@ public class InicioController {
 
     @FXML
     private void onIrARegistro() {
-        AppPelicula.mostrarVista("/dam.code/view/signup_view.fxml");
+        // ✅ barras en vez de puntos
+        AppPelicula.mostrarVista("/dam/code/view/registro_view.fxml");
     }
 
-    public static Persona getUsuarioActual() {
-        return usuarioActual;
-    }
-
-    public static void cerrarSesion() {
-        usuarioActual = null;
-    }
+    public static Persona getUsuarioActual() { return usuarioActual; }
+    public static void cerrarSesion() { usuarioActual = null; }
 
     private void mostrarError(String msg) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(null);
-        alert.setContentText(msg);
-        alert.showAndWait();
+        Alert a = new Alert(Alert.AlertType.ERROR);
+        a.setTitle("Error"); a.setHeaderText(null);
+        a.setContentText(msg); a.showAndWait();
     }
 }

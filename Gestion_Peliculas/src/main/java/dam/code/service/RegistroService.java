@@ -2,51 +2,49 @@ package dam.code.service;
 
 import dam.code.exceptions.PersonaException;
 import dam.code.model.Persona;
-import dam.code.persistence.RegistroDAO;
+import dam.code.persistence.JsonManager;
 
 import java.util.Map;
 
 public class RegistroService {
 
-    private Map<Persona, String> registros;
-
-    public RegistroService() {
-        this.registros = RegistroDAO.cargarRegistros();
-    }
-
     public void registrar(Persona persona, String password) throws PersonaException {
-        if (!persona.getDni().matches("\\d{8}[A-Za-z]")) {
-            throw new PersonaException("DNI inválido. Formato: 8 números y 1 letra (ej: 12345678A).");
-        }
-        for (Persona p : registros.keySet()) {
-            if (p.getDni().equalsIgnoreCase(persona.getDni())) {
-                throw new PersonaException("Ya existe un usuario con ese DNI.");
-            }
-        }
-        if (password == null || password.length() < 4) {
-            throw new PersonaException("La contraseña debe tener mínimo 4 caracteres.");
-        }
-        registros.put(persona, password);
+        validar(persona, password);
         try {
-            RegistroDAO.guardarRegistros(registros);
-        } catch (Exception e) {
-            throw new PersonaException("Error al guardar el usuario.", e);
-        }
-    }
-
-    public Persona login(String dni, String password) throws PersonaException {
-        for (Map.Entry<Persona, String> entry : registros.entrySet()) {
-            if (entry.getKey().getDni().equalsIgnoreCase(dni)) {
-                if (!entry.getValue().equals(password)) {
-                    throw new PersonaException("Contraseña incorrecta.");
-                }
-                return entry.getKey();
+            Map<Persona, String> usuarios = JsonManager.cargarUsuarios();
+            boolean existe = usuarios.keySet().stream()
+                    .anyMatch(p -> p.getDni().equalsIgnoreCase(persona.getDni()));
+            if (existe) {
+                throw new PersonaException("Ya existe un usuario con el DNI: " + persona.getDni());
             }
+            usuarios.put(persona, password);
+            JsonManager.guardarUsuarios(usuarios);
+        } catch (PersonaException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new PersonaException("Error al guardar el usuario: " + e.getMessage());
         }
-        throw new PersonaException("No existe ningún usuario con ese DNI.");
     }
 
     public boolean existenUsuarios() {
-        return !registros.isEmpty();
+        return !JsonManager.cargarUsuarios().isEmpty();
+    }
+
+    private void validar(Persona persona, String password) throws PersonaException {
+        if (persona.getDni() == null || !persona.getDni().matches("\\d{8}[A-Za-z]")) {
+            throw new PersonaException("El DNI debe tener 8 números seguidos de 1 letra.");
+        }
+        if (persona.getNombre() == null || persona.getNombre().isBlank()) {
+            throw new PersonaException("El nombre no puede estar vacío.");
+        }
+        if (persona.getApellido() == null || persona.getApellido().isBlank()) {
+            throw new PersonaException("El apellido no puede estar vacío.");
+        }
+        if (persona.getEmail() == null || !persona.getEmail().contains("@")) {
+            throw new PersonaException("El email no es válido.");
+        }
+        if (password == null || password.length() < 4) {
+            throw new PersonaException("La contraseña debe tener al menos 4 caracteres.");
+        }
     }
 }
