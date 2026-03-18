@@ -1,20 +1,24 @@
 package dam.code.controller;
 
 import dam.code.AppPelicula;
+import dam.code.exceptions.PersonaException;
 import dam.code.model.Persona;
 import dam.code.persistence.JsonManager;
+import dam.code.service.RegistroService;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.util.Map;
 
-public class SignupController {
+public class RegistroController {
 
     @FXML private TextField tfDni;
     @FXML private TextField tfNombre;
     @FXML private TextField tfApellido;
     @FXML private TextField tfEmail;
     @FXML private TextField tfPassword;
+
+    private final RegistroService registroService = new RegistroService();
 
     @FXML
     private void onRegistrar() {
@@ -26,33 +30,17 @@ public class SignupController {
             String password = tfPassword.getText();
 
             // Validaciones
-            if (!dni.matches("\\d{8}[A-Za-z]")) {
-                throw new Exception("DNI inválido. Formato: 8 números + 1 letra (ej: 12345678A).");
-            }
-            if (nombre.isBlank() || apellido.isBlank() || email.isBlank()) {
-                throw new Exception("Todos los campos son obligatorios.");
-            }
-            if (password.length() < 4) {
-                throw new Exception("La contraseña debe tener al menos 4 caracteres.");
-            }
-
-            Map<Persona, String> usuarios = JsonManager.cargarUsuarios();
-
-            // Comprobar DNI duplicado
-            for (Persona p : usuarios.keySet()) {
-                if (p.getDni().equalsIgnoreCase(dni)) {
-                    throw new Exception("Ya existe un usuario registrado con ese DNI.");
-                }
+            if (nombre.isBlank() || apellido.isBlank() || email.isBlank() || password.isBlank()) {
+                throw new PersonaException("Todos los campos son obligatorios.");
             }
 
             Persona nueva = new Persona(dni, nombre, apellido, email);
-            usuarios.put(nueva, password);
-            JsonManager.guardarUsuarios(usuarios);
+            registroService.registrar(nueva, password);
 
             mostrarInfo("Usuario registrado correctamente.");
-            AppPelicula.mostrarVista("/dam/code/view/login_view.fxml");
+            AppPelicula.mostrarVista("/dam/code/view/inicio_view.fxml");
 
-        } catch (Exception e) {
+        } catch (PersonaException e) {
             mostrarError(e.getMessage());
         }
     }

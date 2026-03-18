@@ -1,7 +1,6 @@
 package dam.code.controller;
 
 import dam.code.AppPelicula;
-import dam.code.dto.PersonaDTO;
 import dam.code.model.Persona;
 import dam.code.persistence.JsonManager;
 import javafx.fxml.FXML;
@@ -9,7 +8,7 @@ import javafx.scene.control.*;
 
 import java.util.Map;
 
-public class LoginController {
+public class InicioController {
 
     @FXML private TextField tfDni;
     @FXML private PasswordField pfPassword;

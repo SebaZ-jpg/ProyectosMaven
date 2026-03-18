@@ -1,8 +1,6 @@
 package dam.code;
 
-import dam.code.service.PeliculaService;
-import dam.code.persistence.JsonManager;
-import dam.code.model.Persona;
+import dam.code.service.RegistroService;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,11 +18,11 @@ public class AppPelicula extends Application {
         primaryStage = stage;
         primaryStage.setTitle("CineApp");
 
-        Map<Persona, String> usuarios = JsonManager.cargarUsuarios();
-        if (usuarios.isEmpty()) {
-            mostrarVista("/dam/code/view/signup_view.fxml");
+        RegistroService registroService = new RegistroService();
+        if (!registroService.existenUsuarios()) {
+            mostrarVista("/dam.code/view/inicio_view.fxml");
         } else {
-            mostrarVista("/dam/code/view/login_view.fxml");
+            mostrarVista("/dam.code/view/registro_view.fxml");
         }
 
         primaryStage.show();

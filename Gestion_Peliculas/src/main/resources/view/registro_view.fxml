@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="12"
+      alignment="CENTER"
+      prefWidth="380" prefHeight="450"
+      stylesheets="@../styles/styles.css"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="dam.code.controller.InicioController">
+
+    <padding><Insets top="30" right="40" bottom="30" left="40"/></padding>
+
+    <Label text="Registro de Usuario" styleClass="title"/>
+
+    <TextField fx:id="tfDni"      promptText="DNI (ej: 12345678A)"/>
+    <TextField fx:id="tfNombre"   promptText="Nombre"/>
+    <TextField fx:id="tfApellido" promptText="Apellido"/>
+    <TextField fx:id="tfEmail"    promptText="Email"/>
+    <TextField fx:id="tfPassword" promptText="Contraseña"/>
+
+    <Button text="Registrarse"
+            onAction="#onRegistrar"
+            maxWidth="Infinity"/>
+
+    <Separator/>
+
+    <Button text="Ya tengo cuenta → Iniciar sesión"
+            onAction="#onIrALogin"
+            maxWidth="Infinity"/>
+
+</VBox>

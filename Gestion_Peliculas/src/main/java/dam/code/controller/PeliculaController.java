@@ -17,7 +17,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.*;
 
-public class PeliculasController implements Initializable {
+public class PeliculaController implements Initializable {
 
     // ── Tabla ──────────────────────────────────────────
     @FXML private TableView<FilaPelicula> tablaPeliculas;
@@ -121,7 +121,7 @@ public class PeliculasController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Persona usuario = LoginController.getUsuarioActual();
+        Persona usuario = InicioController.getUsuarioActual();
         lblUsuario.setText("Sesión: " + usuario.getNombre() + " " + usuario.getApellido());
 
         // Enlazar columnas con propiedades
@@ -221,7 +221,7 @@ public class PeliculasController implements Initializable {
             confirm.setContentText("¿Añadir una visualización a \"" + fila.getTitulo() + "\"?");
             Optional<ButtonType> res = confirm.showAndWait();
             if (res.isPresent() && res.get() == ButtonType.OK) {
-                service.agregarVisualizacion(fila.getPelicula(), LoginController.getUsuarioActual());
+                service.agregarVisualizacion(fila.getPelicula(), InicioController.getUsuarioActual());
                 recargarTabla();
                 mostrarInfo("Visualización registrada.");
             }
@@ -232,7 +232,7 @@ public class PeliculasController implements Initializable {
 
     @FXML
     private void onCerrarSesion() {
-        LoginController.cerrarSesion();
+        InicioController.cerrarSesion();
         AppPelicula.mostrarVista("/dam/code/view/login_view.fxml");
     }
 

@@ -1,82 +1,93 @@
 package dam.code.model;
 
+import dam.code.dto.PeliculaDTO;
+import javafx.beans.property.*;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
 public class Pelicula implements Serializable {
 
-    private String id;              // 3 letras + 2 números
-    private String titulo;
-    private String director;
-    private Integer duracion;
-    private LocalDate fechaPublicacion;
-
-    public Pelicula() {}
+    private final StringProperty id;              // 3 letras + 2 números
+    private final StringProperty titulo;
+    private final StringProperty director;
+    private final IntegerProperty duracion;
+    private final ObjectProperty<LocalDate> fechaPublicacion;
 
     public Pelicula(String id, String titulo, String director, Integer duracion, LocalDate fechaPublicacion) {
-        this.id = id;
-        this.titulo = titulo;
-        this.director = director;
-        this.duracion = duracion;
-        this.fechaPublicacion = fechaPublicacion;
+        this.id = new SimpleStringProperty(id);
+        this.titulo = new SimpleStringProperty(titulo);
+        this.director = new SimpleStringProperty(director);
+        this.duracion = new SimpleIntegerProperty(duracion);
+        this.fechaPublicacion = new SimpleObjectProperty<>(fechaPublicacion);
     }
 
-    public String getId() {
+    public String getid() {
+        return id.get();
+    }
+
+    public String getitulo(){
+        return titulo.get();
+    }
+
+    public String getdirector(){
+        return director.get();
+    }
+
+    public Integer getduracion(){
+        return duracion.get();
+    }
+
+    public LocalDate getfechaPublicacion(){
+        return fechaPublicacion.get();
+    }
+
+    public StringProperty getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getTitulo() {
+    public StringProperty getTitulo() {
         return titulo;
     }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public String getDirector() {
+    public StringProperty getDirector() {
         return director;
     }
 
-    public void setDirector(String director) {
-        this.director = director;
-    }
-
-    public Integer getDuracion() {
+    public IntegerProperty getDuracion() {
         return duracion;
     }
 
-    public void setDuracion(Integer duracion) {
-        this.duracion = duracion;
-    }
-
-    public LocalDate getFechaPublicacion() {
+    public ObjectProperty<LocalDate> getFechaPublicacion() {
         return fechaPublicacion;
     }
 
-    public void setFechaPublicacion(LocalDate fecha) {
-        this.fechaPublicacion = fecha;
+    public void setDuracion(Integer duracion) {
+        this.duracion.set(duracion);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Pelicula)) return false;
-        Pelicula pelicula = (Pelicula) o;
-        return Objects.equals(id, pelicula.id);
+    public void setfechaPublicacion(LocalDate fechaPublicacion) {
+        this.fechaPublicacion.set(fechaPublicacion);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public PeliculaDTO toDTO() {
+        return new PeliculaDTO(
+            getid(),
+            getitulo(),
+            getdirector(),
+            getduracion(),
+            getfechaPublicacion()
+        );
     }
 
-    @Override
-    public String toString() {
-        return titulo + " (" + id + ")";
+    public static Pelicula fromDTO(PeliculaDTO dto) {
+        return new Pelicula(
+                dto.getId(),
+                dto.getTitulo(),
+                dto.getDirector(),
+                dto.getDuracion(),
+                dto.getFechaPublicacion()
+        );
     }
 }
