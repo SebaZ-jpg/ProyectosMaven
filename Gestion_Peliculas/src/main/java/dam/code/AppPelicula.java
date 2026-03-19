@@ -10,36 +10,33 @@ import javafx.stage.Stage;
 public class AppPelicula extends Application {
 
     private static Stage primaryStage;
+    private static RegistroService registroService;
 
     @Override
     public void start(Stage stage) throws Exception {
         primaryStage = stage;
-        primaryStage.setTitle("CineApp");
+        registroService = new RegistroService();
+        registroService.cargar();
 
-        // Flujo del enunciado:
-        // Si no hay usuarios → registro, si hay → inicio de sesión
-        RegistroService registroService = new RegistroService();
-        if (!registroService.existenUsuarios()) {
-            mostrarVista("view/registro_view.fxml");
+        if (registroService.existenUsuarios()) {
+            cargarVista("/view/incio_view.fxml");
         } else {
-            mostrarVista("view/inicio_view.fxml");
+            cargarVista("/view/registro_view.fxml");
         }
 
+        primaryStage.setTitle("Gestión de Películas");
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 
-    public static void mostrarVista(String fxml) {
-        try {
-            String ruta = "/" + fxml;
-            var url = AppPelicula.class.getResource(ruta);
-            System.out.println("Cargando: " + url);
-            FXMLLoader loader = new FXMLLoader(url);
-            Parent root = loader.load();
-            primaryStage.setScene(new Scene(root));
-            primaryStage.sizeToScene();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public static void cargarVista(String ruta) throws Exception {
+        FXMLLoader loader = new FXMLLoader(AppPelicula.class.getResource(ruta));
+        Parent root = loader.load();
+        primaryStage.setScene(new Scene(root));
+    }
+
+    public static RegistroService getRegistroService() {
+        return registroService;
     }
 
     public static void main(String[] args) {

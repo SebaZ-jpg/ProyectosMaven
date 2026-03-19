@@ -2,18 +2,16 @@ package dam.code.repository;
 
 import dam.code.exceptions.PeliculaException;
 import dam.code.model.Pelicula;
-import dam.code.model.Persona;
 
-import java.time.LocalDate;
-import java.util.*;
+import java.util.Map;
 
 public interface PeliculaRepository {
-
-    void agregar(Pelicula pelicula) throws PeliculaException;
-    void editarTitulo(Pelicula pelicula, String nuevoTitulo) throws PeliculaException;
-    void editarFecha(Pelicula pelicula, LocalDate nuevaFecha) throws PeliculaException;
-    void eliminar(Pelicula pelicula) throws PeliculaException;
-    void agregarVisualizacion(Pelicula pelicula, Persona usuario) throws PeliculaException;
+    void agregarPelicula(Pelicula pelicula) throws PeliculaException;
+    void eliminarPelicula(String id) throws PeliculaException;
+    void editarTitulo(String id, String nuevoTitulo) throws PeliculaException;
+    void editarFecha(String id, java.time.LocalDate nuevaFecha) throws PeliculaException;
     Map<Pelicula, Integer> getVisualizaciones();
-    List<Pelicula> getPeliculas();
+    void agregarVisualizacion(String id) throws PeliculaException;
+    void guardar() throws PeliculaException;
+    void cargar() throws PeliculaException;
 }

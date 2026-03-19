@@ -2,49 +2,76 @@ package dam.code.service;
 
 import dam.code.exceptions.PersonaException;
 import dam.code.model.Persona;
-import dam.code.persistence.JsonManager;
+import dam.code.persistence.RegistroDAO;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class RegistroService {
 
-    public void registrar(Persona persona, String password) throws PersonaException {
-        validar(persona, password);
+    private final RegistroDAO registroDAO;
+    private Map<Persona, String> registros;
+    private Persona usuarioActual;
+
+    public RegistroService() {
+        this.registroDAO = new RegistroDAO();
+        this.registros = new LinkedHashMap<>();
+    }
+
+    public void cargar() throws PersonaException {
         try {
-            Map<Persona, String> usuarios = JsonManager.cargarUsuarios();
-            boolean existe = usuarios.keySet().stream()
-                    .anyMatch(p -> p.getDni().equalsIgnoreCase(persona.getDni()));
-            if (existe) {
-                throw new PersonaException("Ya existe un usuario con el DNI: " + persona.getDni());
-            }
-            usuarios.put(persona, password);
-            JsonManager.guardarUsuarios(usuarios);
-        } catch (PersonaException e) {
-            throw e;
+            registros = registroDAO.cargar();
+        } catch (Exception e) {
+            throw new PersonaException("Error al cargar los usuarios: " + e.getMessage());
+        }
+    }
+
+    public void registrarUsuario(String dni, String nombre, String apellido, String email, String password) throws PersonaException {
+        validarDni(dni);
+        validarEmail(email);
+
+        for (Persona p : registros.keySet()) {
+            if (p.getDni().equals(dni)) throw new PersonaException("Ya existe un usuario con ese DNI.");
+            if (p.getEmail().equals(email)) throw new PersonaException("Ya existe un usuario con ese email.");
+        }
+
+        Persona nueva = new Persona(dni, nombre, apellido, email);
+        registros.put(nueva, password);
+
+        try {
+            registroDAO.guardar(registros);
         } catch (Exception e) {
             throw new PersonaException("Error al guardar el usuario: " + e.getMessage());
         }
     }
 
-    public boolean existenUsuarios() {
-        return !JsonManager.cargarUsuarios().isEmpty();
+    public Persona login(String dni, String password) throws PersonaException {
+        for (Map.Entry<Persona, String> entry : registros.entrySet()) {
+            if (entry.getKey().getDni().equals(dni) && entry.getValue().equals(password)) {
+                usuarioActual = entry.getKey();
+                return usuarioActual;
+            }
+        }
+        throw new PersonaException("DNI o contraseña incorrectos.");
     }
 
-    private void validar(Persona persona, String password) throws PersonaException {
-        if (persona.getDni() == null || !persona.getDni().matches("\\d{8}[A-Za-z]")) {
-            throw new PersonaException("El DNI debe tener 8 números y 1 letra. Ej: 12345678A");
+    public boolean existenUsuarios() {
+        return registroDAO.existenUsuarios();
+    }
+
+    public Persona getUsuarioActual() {
+        return usuarioActual;
+    }
+
+    private void validarDni(String dni) throws PersonaException {
+        if (!dni.matches("\\d{8}[A-Za-z]")) {
+            throw new PersonaException("DNI inválido. Formato: 8 números y 1 letra.");
         }
-        if (persona.getNombre() == null || persona.getNombre().isBlank()) {
-            throw new PersonaException("El nombre no puede estar vacío.");
-        }
-        if (persona.getApellido() == null || persona.getApellido().isBlank()) {
-            throw new PersonaException("El apellido no puede estar vacío.");
-        }
-        if (persona.getEmail() == null || !persona.getEmail().contains("@")) {
-            throw new PersonaException("El email no es válido.");
-        }
-        if (password == null || password.length() < 4) {
-            throw new PersonaException("La contraseña debe tener al menos 4 caracteres.");
+    }
+
+    private void validarEmail(String email) throws PersonaException {
+        if (!email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
+            throw new PersonaException("Email inválido.");
         }
     }
 }

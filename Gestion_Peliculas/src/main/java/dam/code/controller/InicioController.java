@@ -1,66 +1,62 @@
 package dam.code.controller;
 
 import dam.code.AppPelicula;
+import dam.code.exceptions.PersonaException;
 import dam.code.model.Persona;
-import dam.code.persistence.JsonManager;
+import dam.code.service.PeliculaService;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
-
-import java.util.Map;
+import javafx.stage.Stage;
 
 public class InicioController {
 
-    @FXML private TextField     txtDni;
-    @FXML private PasswordField txtContrasena;
-
-    private static Persona usuarioActual;
+    @FXML private TextField txtDni;
+    @FXML private PasswordField txtPassword;
 
     @FXML
-    private void onIniciarSesion() {
+    private void onLogin() {
         try {
-            String dni      = txtDni.getText().trim();
-            String password = txtContrasena.getText();
+            Persona usuario = AppPelicula.getRegistroService().login(
+                    txtDni.getText().trim(),
+                    txtPassword.getText().trim()
+            );
 
-            if (dni.isBlank() || password.isBlank()) {
-                throw new Exception("Rellena todos los campos.");
-            }
+            PeliculaService peliculaService = new PeliculaService();
+            peliculaService.inicializar(usuario);
 
-            Map<Persona, String> usuarios = JsonManager.cargarUsuarios();
-            Persona encontrado = null;
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/peliculas_view.fxml"));
+            Parent root = loader.load();
 
-            for (Map.Entry<Persona, String> entry : usuarios.entrySet()) {
-                if (entry.getKey().getDni().equalsIgnoreCase(dni)) {
-                    if (!entry.getValue().equals(password)) {
-                        throw new Exception("Contraseña incorrecta.");
-                    }
-                    encontrado = entry.getKey();
-                    break;
-                }
-            }
+            PeliculaController peliculaController = loader.getController();
+            peliculaController.inicializar(peliculaService);
 
-            if (encontrado == null) {
-                throw new Exception("No existe ningún usuario con ese DNI.");
-            }
+            Stage stage = (Stage) txtDni.getScene().getWindow();
+            stage.setScene(new Scene(root));
 
-            usuarioActual = encontrado;
-            AppPelicula.mostrarVista("view/peliculas_view.fxml");
-
-        } catch (Exception e) {
+        } catch (PersonaException e) {
             mostrarError(e.getMessage());
+        } catch (Exception e) {
+            mostrarError("Error inesperado: " + e.getMessage());
         }
     }
 
     @FXML
-    private void onIrARegistro() {
-        AppPelicula.mostrarVista("view/registro_view.fxml");
+    private void onIrRegistro() {
+        try {
+            AppPelicula.cargarVista("/view/registro_view.fxml");
+        } catch (Exception e) {
+            mostrarError("Error al cargar el registro: " + e.getMessage());
+        }
     }
 
-    public static Persona getUsuarioActual() { return usuarioActual; }
-    public static void cerrarSesion()        { usuarioActual = null; }
-
-    private void mostrarError(String msg) {
-        Alert a = new Alert(Alert.AlertType.ERROR);
-        a.setTitle("Error"); a.setHeaderText(null);
-        a.setContentText(msg); a.showAndWait();
+    private void mostrarError(String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
     }
 }

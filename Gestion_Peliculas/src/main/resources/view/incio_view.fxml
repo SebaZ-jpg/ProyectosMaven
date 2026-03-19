@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx"
+<VBox spacing="10"
+      alignment="CENTER"
+      stylesheets="/styles/styles.css"
+      xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="dam.code.controller.InicioController"
-      spacing="12" alignment="CENTER"
-      stylesheets="/styles/styles.css">
+      styleClass="root">
 
-    <Label text="CineApp" styleClass="title"/>
-    <Label text="Inicia sesión para continuar"/>
 
-    <Label text="DNI"/>
-    <TextField fx:id="txtDni" promptText="12345678A"/>
 
-    <Label text="Contraseña"/>
-    <PasswordField fx:id="txtContrasena" promptText="Contraseña"/>
+    <Label text="Inicio de Sesión" styleClass="title"/>
 
-    <Button text="Iniciar sesión" onAction="#onIniciarSesion" maxWidth="Infinity"/>
-    <Button text="¿No tienes cuenta? Regístrate" onAction="#onIrARegistro"
-            maxWidth="Infinity" style="-fx-background-color: #95a5a6;"/>
+    <VBox spacing="10" alignment="CENTER">
+        <TextField fx:id="txtDni" promptText="DNI" styleClass="input"/>
+        <PasswordField fx:id="txtPassword" promptText="Contraseña" styleClass="input"/>
+    </VBox>
+
+    <Button text="Iniciar Sesión" onAction="#onLogin" styleClass="boton-primary"/>
+    <Button text="¿No tienes cuenta? Regístrate" onAction="#onIrRegistro" styleClass="boton-link"/>
 
 </VBox>

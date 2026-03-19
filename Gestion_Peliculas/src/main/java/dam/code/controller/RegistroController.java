@@ -2,55 +2,60 @@ package dam.code.controller;
 
 import dam.code.AppPelicula;
 import dam.code.exceptions.PersonaException;
-import dam.code.model.Persona;
-import dam.code.service.RegistroService;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 public class RegistroController {
 
-    @FXML private TextField     txtDni;
-    @FXML private TextField     txtNombre;
-    @FXML private TextField     txtApellido;
-    @FXML private TextField     txtEmail;
-    @FXML private PasswordField txtContrasena;
-
-    private final RegistroService registroService = new RegistroService();
+    @FXML private TextField txtDni;
+    @FXML private TextField txtNombre;
+    @FXML private TextField txtApellido;
+    @FXML private TextField txtEmail;
+    @FXML private PasswordField txtPassword;
 
     @FXML
     private void onRegistrar() {
         try {
-            String dni      = txtDni.getText().trim();
-            String nombre   = txtNombre.getText().trim();
-            String apellido = txtApellido.getText().trim();
-            String email    = txtEmail.getText().trim();
-            String password = txtContrasena.getText();
-
-            Persona nueva = new Persona(dni, nombre, apellido, email);
-            registroService.registrar(nueva, password);
+            AppPelicula.getRegistroService().registrarUsuario(
+                    txtDni.getText().trim(),
+                    txtNombre.getText().trim(),
+                    txtApellido.getText().trim(),
+                    txtEmail.getText().trim(),
+                    txtPassword.getText().trim()
+            );
 
             mostrarInfo("Usuario registrado correctamente.");
-            AppPelicula.mostrarVista("view/inicio_view.fxml");
+            AppPelicula.cargarVista("/view/incio_view.fxml");
 
         } catch (PersonaException e) {
             mostrarError(e.getMessage());
+        } catch (Exception e) {
+            mostrarError("Error inesperado: " + e.getMessage());
         }
     }
 
     @FXML
-    private void onIrAInicio() {
-        AppPelicula.mostrarVista("view/inicio_view.fxml");
+    private void onIrLogin() {
+        try {
+            AppPelicula.cargarVista("/view/incio_view.fxml");
+        } catch (Exception e) {
+            mostrarError("Error al cargar el login: " + e.getMessage());
+        }
     }
 
-    private void mostrarError(String msg) {
-        Alert a = new Alert(Alert.AlertType.ERROR);
-        a.setTitle("Error"); a.setHeaderText(null);
-        a.setContentText(msg); a.showAndWait();
+    private void mostrarError(String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
     }
 
-    private void mostrarInfo(String msg) {
-        Alert a = new Alert(Alert.AlertType.INFORMATION);
-        a.setTitle("Registro exitoso"); a.setHeaderText(null);
-        a.setContentText(msg); a.showAndWait();
+    private void mostrarInfo(String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Éxito");
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
     }
 }
