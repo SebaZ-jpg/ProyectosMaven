@@ -3,6 +3,11 @@ package dam.code.model;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * Modelo que representa un usuario registrado en la aplicación.
+ * Se serializa en un archivo .dat junto con su contraseña.
+ */
+
 public class Persona implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -11,6 +16,12 @@ public class Persona implements Serializable {
     private final String nombre;
     private final String apellido;
     private final String email;
+
+
+    /**
+     * Constructor completo de Persona.
+     * El DNI debe tener formato de 8 números y 1 letra.
+     */
 
     public Persona(String dni, String nombre, String apellido, String email) {
         this.dni = dni;
@@ -35,6 +46,10 @@ public class Persona implements Serializable {
         return email;
     }
 
+    /**
+     * Dos personas son iguales si coinciden DNI, nombre, apellido y email.
+     */
+
     @Override
     public boolean equals(Object o) {
         if(o == null || getClass() != o.getClass()) return false;
@@ -42,6 +57,9 @@ public class Persona implements Serializable {
         return Objects.equals(dni, persona.dni) && Objects.equals(nombre, persona.nombre) && Objects.equals(apellido, persona.apellido) && Objects.equals(email, persona.email);
     }
 
+    /**
+     * Genera el hash basado en DNI, nombre, apellido y email.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(dni,  nombre, apellido, email);

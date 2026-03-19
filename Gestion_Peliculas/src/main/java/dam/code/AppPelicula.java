@@ -7,11 +7,19 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * Clase principal de la aplicación. Extiende {@code Application} de JavaFX.
+ * Decide qué vista mostrar al inicio según si existen usuarios registrados.
+ */
 public class AppPelicula extends Application {
 
     private static Stage primaryStage;
     private static RegistroService registroService;
 
+    /**
+     * Punto de entrada de JavaFX. Carga los registros y muestra
+     * la vista de login o registro según corresponda.
+     */
     @Override
     public void start(Stage stage) throws Exception {
         primaryStage = stage;
@@ -29,6 +37,9 @@ public class AppPelicula extends Application {
         primaryStage.show();
     }
 
+    /**
+     * Carga y muestra la vista indicada por la ruta del FXML.
+     */
     public static void cargarVista(String ruta) throws Exception {
         FXMLLoader loader = new FXMLLoader(AppPelicula.class.getResource(ruta));
         Parent root = loader.load();

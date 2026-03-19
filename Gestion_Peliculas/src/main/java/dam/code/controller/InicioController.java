@@ -11,11 +11,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+/**
+ * Controlador de la vista de inicio de sesión.
+ * Gestiona el login del usuario y la navegación hacia el registro.
+ */
 public class InicioController {
 
     @FXML private TextField txtDni;
     @FXML private PasswordField txtPassword;
 
+    /**
+     * Autentica al usuario e inicializa la vista de gestión de películas.
+     */
     @FXML
     private void onLogin() {
         try {
@@ -43,6 +50,9 @@ public class InicioController {
         }
     }
 
+    /**
+     * Navega a la vista de registro de usuarios.
+     */
     @FXML
     private void onIrRegistro() {
         try {
@@ -52,6 +62,9 @@ public class InicioController {
         }
     }
 
+    /**
+     * Muestra los mensajes de errores correspondientes segun el incoveniente.
+     */
     private void mostrarError(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");

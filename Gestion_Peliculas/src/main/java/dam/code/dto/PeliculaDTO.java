@@ -3,6 +3,11 @@ package dam.code.dto;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+
+/**
+ * DTO que representa una película.
+ * Transporta los datos entre capas y se usa para la serialización JSON.
+ */
 public class PeliculaDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -14,11 +19,21 @@ public class PeliculaDTO implements Serializable {
     private final LocalDate fechaPublicacion;
     private final Integer visualizaciones;
 
+    /**
+     * Constructor sin visualizaciones, las inicializa a 0.
+     * Usado por Pelicula.toDTO()
+     */
+
     public PeliculaDTO(String id, String titulo, String director,
                        Integer duracion, LocalDate fechaPublicacion) {
 
         this(id, titulo, director, duracion, fechaPublicacion, 0);
     }
+
+    /**
+     * Constructor completo con visualizaciones.
+     * Usado por  JsonManager al guardar y cargar el JSON.
+     */
 
     public PeliculaDTO(String id, String titulo, String director, Integer duracion, LocalDate fechaPublicacion, Integer visualizaciones) {
         this.id = id;

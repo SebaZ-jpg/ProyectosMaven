@@ -5,6 +5,10 @@ import dam.code.exceptions.PersonaException;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+/**
+ * Controlador de la vista de registro de usuarios.
+ * Gestiona el alta de nuevos usuarios y la navegación hacia el login.
+ */
 public class RegistroController {
 
     @FXML private TextField txtDni;
@@ -13,6 +17,10 @@ public class RegistroController {
     @FXML private TextField txtEmail;
     @FXML private PasswordField txtPassword;
 
+    /**
+     * Registra un nuevo usuario con los datos del formulario.
+     * Si el registro es exitoso navega al login.
+     */
     @FXML
     private void onRegistrar() {
         try {
@@ -34,6 +42,9 @@ public class RegistroController {
         }
     }
 
+    /**
+     * Navega a la vista de inicio de sesión.
+     */
     @FXML
     private void onIrLogin() {
         try {

@@ -5,6 +5,10 @@ import dam.code.model.Pelicula;
 
 import java.util.Map;
 
+/**
+ * Interfaz que define las operaciones disponibles sobre el mapa de visualizaciones.
+ * Implementada por PeliculaService.
+ */
 public interface PeliculaRepository {
     void agregarPelicula(Pelicula pelicula) throws PeliculaException;
     void eliminarPelicula(String id) throws PeliculaException;

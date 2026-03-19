@@ -7,17 +7,28 @@ import dam.code.persistence.RegistroDAO;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+
+/**
+ * Servicio que gestiona el registro y autenticación de usuarios.
+ * Se apoya en RegistroDAO para la persistencia en el archivo .dat.
+ */
 public class RegistroService {
 
     private final RegistroDAO registroDAO;
     private Map<Persona, String> registros;
     private Persona usuarioActual;
 
+    /**
+     * Constructor que inicializa el DAO y el mapa de registros vacío.
+     */
     public RegistroService() {
         this.registroDAO = new RegistroDAO();
         this.registros = new LinkedHashMap<>();
     }
 
+    /**
+     * Carga los registros desde el archivo .dat.
+     */
     public void cargar() throws PersonaException {
         try {
             registros = registroDAO.cargar();
@@ -26,6 +37,9 @@ public class RegistroService {
         }
     }
 
+    /**
+     * Registra un nuevo usuario validando el DNI, email y duplicados.
+     */
     public void registrarUsuario(String dni, String nombre, String apellido, String email, String password) throws PersonaException {
         validarDni(dni);
         validarEmail(email);
@@ -45,6 +59,10 @@ public class RegistroService {
         }
     }
 
+    /**
+     * Autentica un usuario por DNI y contraseña.
+     * Devuelve la Persona si las credenciales son correctas.
+     */
     public Persona login(String dni, String password) throws PersonaException {
         for (Map.Entry<Persona, String> entry : registros.entrySet()) {
             if (entry.getKey().getDni().equals(dni) && entry.getValue().equals(password)) {

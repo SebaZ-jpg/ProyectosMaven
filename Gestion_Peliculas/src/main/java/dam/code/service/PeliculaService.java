@@ -10,22 +10,36 @@ import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * Servicio que gestiona las operaciones sobre el mapa de visualizaciones.
+ * Implementa PeliculaRepository y usa JsonManager para la persistencia.
+ * Cada usuario tiene su propio archivo JSON.
+ */
 public class PeliculaService implements PeliculaRepository {
 
     private final JsonManager jsonManager;
     private Map<Pelicula, Integer> visualizaciones;
     private String rutaArchivo;
 
+    /**
+     * Constructor que inicializa el JsonManager y el mapa vacío.
+     */
     public PeliculaService() {
         this.jsonManager = new JsonManager();
         this.visualizaciones = new LinkedHashMap<>();
     }
 
+    /**
+     * Inicializa el servicio con el usuario actual y carga su JSON.
+     */
     public void inicializar(Persona usuario) throws PeliculaException {
         this.rutaArchivo = "data/visualizaciones/" + usuario.getDni() + ".json";
         cargar();
     }
 
+    /**
+     * Agrega una nueva película al mapa validando ID, duración y fecha.
+     */
     @Override
     public void agregarPelicula(Pelicula pelicula) throws PeliculaException {
         validarId(pelicula.getid());
@@ -47,6 +61,9 @@ public class PeliculaService implements PeliculaRepository {
         guardar();
     }
 
+    /**
+     * Elimina la película con el ID indicado.
+     */
     @Override
     public void eliminarPelicula(String id) throws PeliculaException {
         Pelicula encontrada = buscarPorId(id);
@@ -54,6 +71,9 @@ public class PeliculaService implements PeliculaRepository {
         guardar();
     }
 
+    /**
+     * Edita el título de la película con el ID indicado.
+     */
     @Override
     public void editarTitulo(String id, String nuevoTitulo) throws PeliculaException {
         Pelicula encontrada = buscarPorId(id);
@@ -61,6 +81,9 @@ public class PeliculaService implements PeliculaRepository {
         guardar();
     }
 
+    /**
+     * Edita la fecha de publicación de la película con el ID indicado.
+     */
     @Override
     public void editarFecha(String id, LocalDate nuevaFecha) throws PeliculaException {
         Pelicula encontrada = buscarPorId(id);
@@ -68,6 +91,9 @@ public class PeliculaService implements PeliculaRepository {
         guardar();
     }
 
+    /**
+     * Devuelve el mapa completo de películas y sus visualizaciones.
+     */
     @Override
     public Map<Pelicula, Integer> getVisualizaciones() {
         return visualizaciones;
@@ -80,6 +106,9 @@ public class PeliculaService implements PeliculaRepository {
         guardar();
     }
 
+    /**
+     * Incrementa en uno las visualizaciones de la película con el ID indicado.
+     */
     @Override
     public void guardar() throws PeliculaException {
         try {
@@ -89,6 +118,9 @@ public class PeliculaService implements PeliculaRepository {
         }
     }
 
+    /**
+     * Persiste el mapa de visualizaciones en el archivo JSON del usuario.
+     */
     @Override
     public void cargar() throws PeliculaException {
         try {
@@ -98,6 +130,10 @@ public class PeliculaService implements PeliculaRepository {
         }
     }
 
+    /**
+     * Busca y devuelve la película con el ID indicado.
+     * Lanza excepción si no se encuentra.
+     */
     private Pelicula buscarPorId(String id) throws PeliculaException {
         for (Pelicula p : visualizaciones.keySet()) {
             if (p.getid().equals(id)) return p;
@@ -105,6 +141,10 @@ public class PeliculaService implements PeliculaRepository {
         throw new PeliculaException("No se encontró una película con ID: " + id);
     }
 
+    /**
+     * Valida que el ID tenga el formato correcto: 3 letras y 2 números.
+     * Lanza excepción si el formato es incorrecto.
+     */
     private void validarId(String id) throws PeliculaException {
         if (!id.matches("[A-Za-z]{3}\\d{2}")) {
             throw new PeliculaException("ID inválido. Formato: 3 letras y 2 números.");

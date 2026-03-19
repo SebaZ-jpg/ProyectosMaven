@@ -10,10 +10,19 @@ import java.lang.reflect.Type;
 import java.nio.file.*;
 import java.util.*;
 
+
+/**
+ * Gestiona la serialización y deserialización del mapa de visualizaciones
+ * en formato JSON usando Gson. Crea un archivo por cada usuario registrado.
+ */
 public class JsonManager {
 
     private final Gson gson;
 
+
+    /**
+     * Constructor que configura Gson con el adaptador de fechas.
+     */
     public JsonManager() {
         this.gson = new GsonBuilder()
                 .registerTypeAdapter(java.time.LocalDate.class, new LocalDateAdapter())
@@ -21,6 +30,10 @@ public class JsonManager {
                 .create();
     }
 
+
+    /**
+     * Guarda el mapa de visualizaciones en el archivo JSON indicado.
+     */
     public void guardar(Map<Pelicula, Integer> visualizaciones, String rutaArchivo) throws IOException {
         List<PeliculaDTO> lista = new ArrayList<>();
         for (Map.Entry<Pelicula, Integer> entry : visualizaciones.entrySet()) {
@@ -42,6 +55,10 @@ public class JsonManager {
         }
     }
 
+    /**
+     * Carga el mapa de visualizaciones desde el archivo JSON indicado.
+     * Si no existe el archivo devuelve un mapa vacío.
+     */
     public Map<Pelicula, Integer> cargar(String rutaArchivo) throws IOException {
         Map<Pelicula, Integer> resultado = new LinkedHashMap<>();
         File file = new File(rutaArchivo);

@@ -6,6 +6,12 @@ import javafx.beans.property.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+/**
+ * Modelo que representa una película en la aplicación.
+ * Usa JavaFX Properties para enlazarse con la TableView.
+ * El ID debe tener formato de 3 letras y 2 números.
+ */
+
 public class Pelicula implements Serializable {
 
     private final StringProperty id;              // 3 letras + 2 números
@@ -14,6 +20,9 @@ public class Pelicula implements Serializable {
     private final IntegerProperty duracion;
     private final ObjectProperty<LocalDate> fechaPublicacion;
 
+    /**
+     * Constructor completo de Pelicula.
+     */
     public Pelicula(String id, String titulo, String director, Integer duracion, LocalDate fechaPublicacion) {
         this.id = new SimpleStringProperty(id);
         this.titulo = new SimpleStringProperty(titulo);
@@ -36,13 +45,13 @@ public class Pelicula implements Serializable {
         return fechaPublicacion.get();
     }
 
-
+    /**
+     * Devuelve la propiedad del ID, titulo, director, duracion y fecha para enlazar con la TableView.
+     */
     public StringProperty idProperty() {
         return id;
     }
-    public StringProperty tituloProperty() {
-        return titulo;
-    }
+    public StringProperty tituloProperty() {return titulo;}
     public StringProperty directorProperty() {
         return director;
     }
@@ -58,6 +67,9 @@ public class Pelicula implements Serializable {
         this.fechaPublicacion.set(fechaPublicacion);
     }
 
+    /**
+     * Convierte la película a DTO para su transferencia o serialización.
+     */
     public PeliculaDTO toDTO() {
         return new PeliculaDTO(
             getid(),
@@ -68,6 +80,9 @@ public class Pelicula implements Serializable {
         );
     }
 
+    /**
+     * Crea una instancia de Pelicula a partir de un DTO.
+     */
     public static Pelicula fromDTO(PeliculaDTO dto) {
         return new Pelicula(
                 dto.getId(),

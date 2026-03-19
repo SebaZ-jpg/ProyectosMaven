@@ -12,6 +12,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.time.LocalDate;
 
+/**
+ * Controlador de la vista de gestión de visualizaciones.
+ * Gestiona las operaciones sobre la tabla de películas y la navegación.
+ */
 public class PeliculaController {
 
     @FXML private TableView<Pelicula> tablaPeliculas;
@@ -31,6 +35,10 @@ public class PeliculaController {
     private PeliculaService peliculaService;
     private ObservableList<Pelicula> listaPeliculas;
 
+    /**
+     * Inicializa el controlador con el servicio del usuario actual.
+     * Configura la tabla y el doble clic.
+     */
     public void inicializar(PeliculaService peliculaService) {
         this.peliculaService = peliculaService;
         configurarTabla();
@@ -38,6 +46,9 @@ public class PeliculaController {
         configurarDobleClick();
     }
 
+    /**
+     * Configura las columnas de la tabla enlazándolas con las propiedades del modelo.
+     */
     private void configurarTabla() {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colTitulo.setCellValueFactory(new PropertyValueFactory<>("titulo"));
@@ -51,6 +62,9 @@ public class PeliculaController {
         );
     }
 
+    /**
+     * Carga los datos del mapa de visualizaciones en la tabla.
+     */
     private void cargarTabla() {
         listaPeliculas = FXCollections.observableArrayList(
                 peliculaService.getVisualizaciones().keySet()
@@ -58,6 +72,9 @@ public class PeliculaController {
         tablaPeliculas.setItems(listaPeliculas);
     }
 
+    /**
+     * Configura el doble clic sobre una fila para añadir una visualización.
+     */
     private void configurarDobleClick() {
         tablaPeliculas.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
@@ -82,6 +99,7 @@ public class PeliculaController {
         });
     }
 
+    /** Agrega una nueva película con los datos del formulario. */
     @FXML
     private void onAgregar() {
         try {
@@ -102,6 +120,7 @@ public class PeliculaController {
         }
     }
 
+    /** Edita el título de la película seleccionada. */
     @FXML
     private void onEditarTitulo() {
         Pelicula seleccionada = tablaPeliculas.getSelectionModel().getSelectedItem();
@@ -113,6 +132,8 @@ public class PeliculaController {
             mostrarError(e.getMessage());
         }
     }
+
+    /** Edita la fecha de publicación de la película seleccionada. */
 
     @FXML
     private void onEditarFecha() {
@@ -126,6 +147,7 @@ public class PeliculaController {
         }
     }
 
+    /** Elimina la película seleccionada. */
     @FXML
     private void onEliminar() {
         Pelicula seleccionada = tablaPeliculas.getSelectionModel().getSelectedItem();
@@ -138,6 +160,7 @@ public class PeliculaController {
         }
     }
 
+    /** Cierra la sesión y vuelve a la vista de login. */
     @FXML
     private void onCerrarSesion() {
         try {
