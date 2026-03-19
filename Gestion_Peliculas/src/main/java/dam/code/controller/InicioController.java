@@ -10,16 +10,16 @@ import java.util.Map;
 
 public class InicioController {
 
-    @FXML private TextField     tfDni;
-    @FXML private PasswordField pfPassword;
+    @FXML private TextField     txtDni;
+    @FXML private PasswordField txtContrasena;
 
     private static Persona usuarioActual;
 
     @FXML
-    private void onLogin() {
+    private void onIniciarSesion() {
         try {
-            String dni      = tfDni.getText().trim();
-            String password = pfPassword.getText();
+            String dni      = txtDni.getText().trim();
+            String password = txtContrasena.getText();
 
             if (dni.isBlank() || password.isBlank()) {
                 throw new Exception("Rellena todos los campos.");
@@ -43,7 +43,7 @@ public class InicioController {
             }
 
             usuarioActual = encontrado;
-            AppPelicula.mostrarVista("/dam/code/view/dashboard.fxml");
+            AppPelicula.mostrarVista("view/peliculas_view.fxml");
 
         } catch (Exception e) {
             mostrarError(e.getMessage());
@@ -52,12 +52,11 @@ public class InicioController {
 
     @FXML
     private void onIrARegistro() {
-        // ✅ barras en vez de puntos
-        AppPelicula.mostrarVista("/dam/code/view/registro_view.fxml");
+        AppPelicula.mostrarVista("view/registro_view.fxml");
     }
 
     public static Persona getUsuarioActual() { return usuarioActual; }
-    public static void cerrarSesion() { usuarioActual = null; }
+    public static void cerrarSesion()        { usuarioActual = null; }
 
     private void mostrarError(String msg) {
         Alert a = new Alert(Alert.AlertType.ERROR);

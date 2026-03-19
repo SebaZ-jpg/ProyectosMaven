@@ -5,6 +5,7 @@ import dam.code.exceptions.PeliculaException;
 import dam.code.model.Pelicula;
 import dam.code.model.Persona;
 import dam.code.service.PeliculaService;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,49 +19,42 @@ import java.util.*;
 
 public class PeliculaController implements Initializable {
 
-    // ── Tabla ──────────────────────────────────────────
-    @FXML private TableView<Pelicula> tablaPeliculas;
-    @FXML private TableColumn<Pelicula, String> colId;
-    @FXML private TableColumn<Pelicula, String> colTitulo;
-    @FXML private TableColumn<Pelicula, String> colDirector;
-    @FXML private TableColumn<Pelicula, Integer> colDuracion;
+    @FXML private TableView<Pelicula>              tablaPeliculas;
+    @FXML private TableColumn<Pelicula, String>    colId;
+    @FXML private TableColumn<Pelicula, String>    colTitulo;
+    @FXML private TableColumn<Pelicula, String>    colDirector;
+    @FXML private TableColumn<Pelicula, Integer>   colDuracion;
     @FXML private TableColumn<Pelicula, LocalDate> colFecha;
-    @FXML private TableColumn<Pelicula, Integer> colVisualizaciones;
+    @FXML private TableColumn<Pelicula, Integer>   colVisualizaciones;
 
-    // ── Formulario agregar ─────────────────────────────
-    @FXML private TextField  tfId;
-    @FXML private TextField  tfTitulo;
-    @FXML private TextField  tfDirector;
-    @FXML private TextField  tfDuracion;
+    @FXML private TextField  txtId;
+    @FXML private TextField  txtTitulo;
+    @FXML private TextField  txtDirector;
+    @FXML private TextField  txtDuracion;
     @FXML private DatePicker dpFecha;
 
-    // ── Edición ────────────────────────────────────────
-    @FXML private TextField  tfNuevoTitulo;
+    @FXML private TextField  txtNuevoTitulo;
     @FXML private DatePicker dpNuevaFecha;
 
     @FXML private Label lblUsuario;
 
-    // ── Estado interno ─────────────────────────────────
     private final PeliculaService service = new PeliculaService();
     private final ObservableList<Pelicula> filas = FXCollections.observableArrayList();
-    private Map<Pelicula, Integer> visualizacionesUsuario = new HashMap<>();
+    private Map<Pelicula, Integer> visualizacionesUsuario = new LinkedHashMap<>();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Persona usuario = InicioController.getUsuarioActual();
         lblUsuario.setText("Sesión: " + usuario.getNombre() + " " + usuario.getApellido());
 
-        // Enlazar columnas usando JavaFX Properties del modelo
         colId.setCellValueFactory(c -> c.getValue().idProperty());
         colTitulo.setCellValueFactory(c -> c.getValue().tituloProperty());
         colDirector.setCellValueFactory(c -> c.getValue().directorProperty());
         colDuracion.setCellValueFactory(c -> c.getValue().duracionProperty().asObject());
         colFecha.setCellValueFactory(c -> c.getValue().fechaProperty());
-
-        // Columna visualizaciones calculada desde el mapa
         colVisualizaciones.setCellValueFactory(c -> {
             int veces = visualizacionesUsuario.getOrDefault(c.getValue(), 0);
-            return new javafx.beans.property.SimpleIntegerProperty(veces).asObject();
+            return new SimpleIntegerProperty(veces).asObject();
         });
 
         tablaPeliculas.setItems(filas);
@@ -78,19 +72,19 @@ public class PeliculaController implements Initializable {
     @FXML
     private void onAgregar() {
         try {
-            String id       = tfId.getText().trim();
-            String titulo   = tfTitulo.getText().trim();
-            String director = tfDirector.getText().trim();
-            String durStr   = tfDuracion.getText().trim();
+            String id       = txtId.getText().trim();
+            String titulo   = txtTitulo.getText().trim();
+            String director = txtDirector.getText().trim();
+            String durStr   = txtDuracion.getText().trim();
             LocalDate fecha = dpFecha.getValue();
 
-            if (id.isBlank() || titulo.isBlank() || director.isBlank() || durStr.isBlank() || fecha == null) {
+            if (id.isBlank() || titulo.isBlank() || director.isBlank()
+                    || durStr.isBlank() || fecha == null) {
                 throw new PeliculaException("Todos los campos son obligatorios.");
             }
 
             int duracion = Integer.parseInt(durStr);
-            Pelicula p = new Pelicula(id, titulo, director, duracion, fecha);
-            service.agregar(p);
+            service.agregar(new Pelicula(id, titulo, director, duracion, fecha));
             limpiarFormulario();
             recargarTabla();
             mostrarInfo("Película agregada correctamente.");
@@ -105,9 +99,8 @@ public class PeliculaController implements Initializable {
     @FXML
     private void onEditarTitulo() {
         try {
-            Pelicula seleccionada = getSeleccionada();
-            String nuevoTitulo = tfNuevoTitulo.getText().trim();
-            service.editarTitulo(seleccionada, nuevoTitulo);
+            Pelicula sel = getSeleccionada();
+            service.editarTitulo(sel, txtNuevoTitulo.getText().trim());
             recargarTabla();
             mostrarInfo("Título actualizado.");
         } catch (PeliculaException e) {
@@ -118,8 +111,8 @@ public class PeliculaController implements Initializable {
     @FXML
     private void onEditarFecha() {
         try {
-            Pelicula seleccionada = getSeleccionada();
-            service.editarFecha(seleccionada, dpNuevaFecha.getValue());
+            Pelicula sel = getSeleccionada();
+            service.editarFecha(sel, dpNuevaFecha.getValue());
             recargarTabla();
             mostrarInfo("Fecha actualizada.");
         } catch (PeliculaException e) {
@@ -130,13 +123,13 @@ public class PeliculaController implements Initializable {
     @FXML
     private void onEliminar() {
         try {
-            Pelicula seleccionada = getSeleccionada();
+            Pelicula sel = getSeleccionada();
             Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
             confirm.setTitle("Confirmar eliminación");
-            confirm.setContentText("¿Eliminar \"" + seleccionada.getitulo() + "\"?");
+            confirm.setContentText("¿Eliminar \"" + sel.getitulo() + "\"?");
             Optional<ButtonType> res = confirm.showAndWait();
             if (res.isPresent() && res.get() == ButtonType.OK) {
-                service.eliminar(seleccionada);
+                service.eliminar(sel);
                 recargarTabla();
             }
         } catch (PeliculaException e) {
@@ -146,15 +139,16 @@ public class PeliculaController implements Initializable {
 
     private void onDobleClic(MouseEvent event) {
         if (event.getClickCount() != 2) return;
-        Pelicula seleccionada = tablaPeliculas.getSelectionModel().getSelectedItem();
-        if (seleccionada == null) return;
+        Pelicula sel = tablaPeliculas.getSelectionModel().getSelectedItem();
+        if (sel == null) return;
         try {
             Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
             confirm.setTitle("Registrar visualización");
-            confirm.setContentText("¿Añadir una visualización a \"" + seleccionada.getitulo() + "\"?");
+            confirm.setContentText("¿Deseas añadir una visualización a \""
+                    + sel.getitulo() + "\"?");
             Optional<ButtonType> res = confirm.showAndWait();
             if (res.isPresent() && res.get() == ButtonType.OK) {
-                service.agregarVisualizacion(seleccionada, InicioController.getUsuarioActual());
+                service.agregarVisualizacion(sel, InicioController.getUsuarioActual());
                 recargarTabla();
                 mostrarInfo("Visualización registrada.");
             }
@@ -166,10 +160,8 @@ public class PeliculaController implements Initializable {
     @FXML
     private void onCerrarSesion() {
         InicioController.cerrarSesion();
-        AppPelicula.mostrarVista("/dam/code/view/login_view.fxml");
+        AppPelicula.mostrarVista("view/inicio_view.fxml");
     }
-
-    // ── Helpers ────────────────────────────────────────
 
     private Pelicula getSeleccionada() throws PeliculaException {
         Pelicula p = tablaPeliculas.getSelectionModel().getSelectedItem();
@@ -178,8 +170,8 @@ public class PeliculaController implements Initializable {
     }
 
     private void limpiarFormulario() {
-        tfId.clear(); tfTitulo.clear(); tfDirector.clear();
-        tfDuracion.clear(); dpFecha.setValue(null);
+        txtId.clear(); txtTitulo.clear(); txtDirector.clear();
+        txtDuracion.clear(); dpFecha.setValue(null);
     }
 
     private void mostrarError(String msg) {

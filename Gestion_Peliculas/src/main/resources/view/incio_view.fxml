@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox spacing="10"
-      alignment="CENTER"
-      stylesheets="/styles/styles.css"
+<VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="dam.code.controller.InicioController">
+      fx:controller="dam.code.controller.InicioController"
+      spacing="12" alignment="CENTER"
+      stylesheets="/styles/styles.css">
 
-    <Label text="Iniciar sesión" style="-fx-font-size: 20;"/>
+    <Label text="CineApp" styleClass="title"/>
+    <Label text="Inicia sesión para continuar"/>
 
     <Label text="DNI"/>
-    <TextField fx:id="tfDni" promptText="12345678A"/>
+    <TextField fx:id="txtDni" promptText="12345678A"/>
 
     <Label text="Contraseña"/>
-    <PasswordField fx:id="pfPassword" promptText="Contraseña"/>
+    <PasswordField fx:id="txtContrasena" promptText="Contraseña"/>
 
-    <Button text="Entrar" onAction="#onLogin" maxWidth="Infinity"/>
+    <Button text="Iniciar sesión" onAction="#onIniciarSesion" maxWidth="Infinity"/>
     <Button text="¿No tienes cuenta? Regístrate" onAction="#onIrARegistro"
-            maxWidth="Infinity"/>
+            maxWidth="Infinity" style="-fx-background-color: #95a5a6;"/>
 
 </VBox>

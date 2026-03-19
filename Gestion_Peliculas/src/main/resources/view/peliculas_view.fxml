@@ -1,59 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox spacing="10"
-      alignment="CENTER"
-      stylesheets="/styles/styles.css"
+<VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="dam.code.controller.PeliculaController">
+      stylesheets="/styles/styles.css"
+      fx:controller="dam.code.controller.PeliculaController"
+      spacing="12">
 
-    <Label text="Gestion de peliculas" styleClass="tittle"/>
-    <!-- Cabecera -->
-    <HBox spacing="10" alignment="CENTER">
+    <HBox styleClass="hbox" spacing="10" alignment="CENTER_LEFT">
         <Label fx:id="lblUsuario"/>
         <Region HBox.hgrow="ALWAYS"/>
-        <Button text="Cerrar sesión" onAction="#onCerrarSesion"/>
+        <Button text="Cerrar sesión" onAction="#onCerrarSesion"
+                style="-fx-background-color: #95a5a6;"/>
     </HBox>
 
     <Separator/>
 
-    <!-- Tabla -->
     <TableView fx:id="tablaPeliculas" VBox.vgrow="ALWAYS">
         <columns>
-            <TableColumn fx:id="colId" text="ID" prefWidth="80"/>
-            <TableColumn fx:id="colTitulo" text="Título" prefWidth="200"/>
-            <TableColumn fx:id="colDirector" text="Director" prefWidth="160"/>
-            <TableColumn fx:id="colDuracion" text="Duración (min)" prefWidth="110"/>
-            <TableColumn fx:id="colFecha" text="Fecha" prefWidth="110"/>
+            <TableColumn fx:id="colId"              text="ID"              prefWidth="80"/>
+            <TableColumn fx:id="colTitulo"          text="Título"          prefWidth="200"/>
+            <TableColumn fx:id="colDirector"        text="Director"        prefWidth="160"/>
+            <TableColumn fx:id="colDuracion"        text="Duración (min)"  prefWidth="110"/>
+            <TableColumn fx:id="colFecha"           text="Fecha"           prefWidth="110"/>
             <TableColumn fx:id="colVisualizaciones" text="Visualizaciones" prefWidth="120"/>
         </columns>
     </TableView>
 
     <Separator/>
 
-    <!-- Formulario agregar -->
-    <Label text="Agregar película" style="tittle"/>
-    <HBox spacing="8" alignment="CENTER_LEFT">
-        <TextField fx:id="tfId"       promptText="ID (ej: ABC01)" prefWidth="90"/>
-        <TextField fx:id="tfTitulo"   promptText="Título"         prefWidth="160"/>
-        <TextField fx:id="tfDirector" promptText="Director"       prefWidth="140"/>
-        <TextField fx:id="tfDuracion" promptText="Duración (min)" prefWidth="110"/>
-        <DatePicker fx:id="dpFecha"   promptText="Fecha"          prefWidth="140"/>
+    <Label text="Agregar película"
+           style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+    <HBox styleClass="hbox" spacing="8" alignment="CENTER_LEFT">
+        <TextField fx:id="txtId"       promptText="ID (ej: ABC01)" prefWidth="90"/>
+        <TextField fx:id="txtTitulo"   promptText="Título"         prefWidth="160"/>
+        <TextField fx:id="txtDirector" promptText="Director"       prefWidth="140"/>
+        <TextField fx:id="txtDuracion" promptText="Duración (min)" prefWidth="110"/>
+        <DatePicker fx:id="dpFecha"    promptText="Fecha"          prefWidth="150"/>
         <Button text="Agregar" onAction="#onAgregar"/>
     </HBox>
 
     <Separator/>
 
-    <!-- Edición -->
-    <Label text="Editar película seleccionada" style="tittle"/>
-    <HBox spacing="8" alignment="CENTER_LEFT">
-        <TextField fx:id="tfNuevoTitulo" promptText="Nuevo título" prefWidth="200"/>
+    <Label text="Editar película seleccionada"
+           style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+    <HBox styleClass="hbox" spacing="8" alignment="CENTER_LEFT">
+        <TextField fx:id="txtNuevoTitulo" promptText="Nuevo título" prefWidth="200"/>
         <Button text="Cambiar título" onAction="#onEditarTitulo"/>
-        <DatePicker fx:id="dpNuevaFecha" promptText="Nueva fecha"  prefWidth="160"/>
+        <DatePicker fx:id="dpNuevaFecha"  promptText="Nueva fecha"  prefWidth="150"/>
         <Button text="Cambiar fecha" onAction="#onEditarFecha"/>
-        <Button text="Eliminar" onAction="#onEliminar"/>
+        <Button text="Eliminar" onAction="#onEliminar" styleClass="button-danger"/>
     </HBox>
 
 </VBox>

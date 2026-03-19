@@ -18,8 +18,6 @@ public class LocalDateAdapter extends TypeAdapter<LocalDate> {
         }
     }
 
-
-
     @Override
     public LocalDate read(JsonReader in) throws IOException {
         String date = in.nextString();

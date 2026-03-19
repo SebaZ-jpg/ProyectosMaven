@@ -7,8 +7,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.util.Map;
-
 public class AppPelicula extends Application {
 
     private static Stage primaryStage;
@@ -18,11 +16,13 @@ public class AppPelicula extends Application {
         primaryStage = stage;
         primaryStage.setTitle("CineApp");
 
+        // Flujo del enunciado:
+        // Si no hay usuarios → registro, si hay → inicio de sesión
         RegistroService registroService = new RegistroService();
         if (!registroService.existenUsuarios()) {
-            mostrarVista("/dam.code/view/registro_view.fxml");
+            mostrarVista("view/registro_view.fxml");
         } else {
-            mostrarVista("/dam.code/view/login_view.fxml");
+            mostrarVista("view/inicio_view.fxml");
         }
 
         primaryStage.show();
@@ -30,7 +30,10 @@ public class AppPelicula extends Application {
 
     public static void mostrarVista(String fxml) {
         try {
-            FXMLLoader loader = new FXMLLoader(AppPelicula.class.getResource(fxml));
+            String ruta = "/" + fxml;
+            var url = AppPelicula.class.getResource(ruta);
+            System.out.println("Cargando: " + url);
+            FXMLLoader loader = new FXMLLoader(url);
             Parent root = loader.load();
             primaryStage.setScene(new Scene(root));
             primaryStage.sizeToScene();

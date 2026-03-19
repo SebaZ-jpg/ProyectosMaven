@@ -5,7 +5,6 @@ import javafx.beans.property.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Objects;
 
 public class Pelicula implements Serializable {
 
@@ -23,50 +22,38 @@ public class Pelicula implements Serializable {
         this.fechaPublicacion = new SimpleObjectProperty<>(fechaPublicacion);
     }
 
-    public String getid() {
-        return id.get();
-    }
-
+    public String getid() {return id.get();}
     public String getitulo(){
         return titulo.get();
     }
-
     public String getdirector(){
         return director.get();
     }
-
     public Integer getduracion(){
         return duracion.get();
     }
-
     public LocalDate getfechaPublicacion(){
         return fechaPublicacion.get();
     }
 
+
     public StringProperty idProperty() {
         return id;
     }
-
     public StringProperty tituloProperty() {
         return titulo;
     }
-
     public StringProperty directorProperty() {
         return director;
     }
-
     public IntegerProperty duracionProperty() {
         return duracion;
     }
-
     public ObjectProperty<LocalDate> fechaProperty() {
         return fechaPublicacion;
     }
 
-    public void setDuracion(Integer duracion) {
-        this.duracion.set(duracion);
-    }
-
+    public void setTitulo(String titulo){ this.titulo.set(titulo); }
     public void setfechaPublicacion(LocalDate fechaPublicacion) {
         this.fechaPublicacion.set(fechaPublicacion);
     }

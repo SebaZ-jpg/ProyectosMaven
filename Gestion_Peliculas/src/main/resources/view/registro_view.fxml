@@ -1,33 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox spacing="10"
-      alignment="CENTER"
-      stylesheets="/styles/styles.css"
+<VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="dam.code.controller.RegistroController">
+      fx:controller="dam.code.controller.RegistroController"
+      spacing="12" alignment="CENTER"
+      stylesheets="/styles/styles.css">
 
-    <Label text="Crear cuenta" style="titlle"/>
+    <Label text="Crear cuenta" styleClass="title"/>
 
     <Label text="DNI"/>
-    <TextField fx:id="tfDni" promptText="12345678A"/>
+    <TextField fx:id="txtDni" promptText="12345678A"/>
 
     <Label text="Nombre"/>
-    <TextField fx:id="tfNombre" promptText="Nombre"/>
+    <TextField fx:id="txtNombre" promptText="Nombre"/>
 
     <Label text="Apellido"/>
-    <TextField fx:id="tfApellido" promptText="Apellido"/>
+    <TextField fx:id="txtApellido" promptText="Apellido"/>
 
     <Label text="Email"/>
-    <TextField fx:id="tfEmail" promptText="correo@ejemplo.com"/>
+    <TextField fx:id="txtEmail" promptText="correo@ejemplo.com"/>
 
     <Label text="Contraseña"/>
-    <PasswordField fx:id="tfPassword" promptText="Contraseña"/>
+    <PasswordField fx:id="txtContrasena" promptText="Mínimo 4 caracteres"/>
 
     <Button text="Registrarse" onAction="#onRegistrar" maxWidth="Infinity"/>
-    <Button text="¿Ya tienes cuenta? Inicia sesión" onAction="#onIrALogin"
-            maxWidth="Infinity"/>
+    <Button text="¿Ya tienes cuenta? Inicia sesión" onAction="#onIrAInicio"
+            maxWidth="Infinity" style="-fx-background-color: #95a5a6;"/>
 
 </VBox>

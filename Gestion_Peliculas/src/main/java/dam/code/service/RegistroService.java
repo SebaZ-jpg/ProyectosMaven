@@ -32,7 +32,7 @@ public class RegistroService {
 
     private void validar(Persona persona, String password) throws PersonaException {
         if (persona.getDni() == null || !persona.getDni().matches("\\d{8}[A-Za-z]")) {
-            throw new PersonaException("El DNI debe tener 8 números seguidos de 1 letra.");
+            throw new PersonaException("El DNI debe tener 8 números y 1 letra. Ej: 12345678A");
         }
         if (persona.getNombre() == null || persona.getNombre().isBlank()) {
             throw new PersonaException("El nombre no puede estar vacío.");

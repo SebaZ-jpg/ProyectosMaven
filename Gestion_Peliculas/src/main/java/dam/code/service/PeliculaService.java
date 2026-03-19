@@ -10,41 +10,35 @@ import java.util.*;
 
 public class PeliculaService {
 
-    // ── Operaciones de películas ───────────────────────
-
-    public Map<Pelicula, Integer> getPeliculas() {
+    public List<Pelicula> getPeliculas() {
         return JsonManager.cargarPeliculas();
     }
 
     public void agregar(Pelicula pelicula) throws PeliculaException {
-        if (pelicula.getid() == null || pelicula.getid().isBlank()) {
-            throw new PeliculaException("El ID no puede estar vacío.");
-        }
+        validar(pelicula);
         try {
-            Map<Pelicula, Integer> mapa = JsonManager.cargarPeliculas();
-            boolean existe = mapa.keySet().stream()
+            List<Pelicula> lista = JsonManager.cargarPeliculas();
+            boolean existe = lista.stream()
                     .anyMatch(p -> p.getid().equalsIgnoreCase(pelicula.getid()));
             if (existe) {
                 throw new PeliculaException("Ya existe una película con el ID: " + pelicula.getid());
             }
-            mapa.put(pelicula, 0);
-            JsonManager.guardarPeliculas(mapa);
+            lista.add(pelicula);
+            JsonManager.guardarPeliculas(lista);
         } catch (PeliculaException e) {
             throw e;
         } catch (Exception e) {
-            throw new PeliculaException("Error al guardar la película: " + e.getMessage());
+            throw new PeliculaException("Error al guardar: " + e.getMessage());
         }
     }
 
     public void eliminar(Pelicula pelicula) throws PeliculaException {
         try {
-            Map<Pelicula, Integer> mapa = JsonManager.cargarPeliculas();
-            Pelicula clave = mapa.keySet().stream()
-                    .filter(p -> p.getid().equalsIgnoreCase(pelicula.getid()))
-                    .findFirst()
-                    .orElseThrow(() -> new PeliculaException("Película no encontrada."));
-            mapa.remove(clave);
-            JsonManager.guardarPeliculas(mapa);
+            List<Pelicula> lista = JsonManager.cargarPeliculas();
+            boolean eliminada = lista.removeIf(
+                    p -> p.getid().equalsIgnoreCase(pelicula.getid()));
+            if (!eliminada) throw new PeliculaException("Película no encontrada.");
+            JsonManager.guardarPeliculas(lista);
         } catch (PeliculaException e) {
             throw e;
         } catch (Exception e) {
@@ -57,18 +51,13 @@ public class PeliculaService {
             throw new PeliculaException("El título no puede estar vacío.");
         }
         try {
-            Map<Pelicula, Integer> mapa = JsonManager.cargarPeliculas();
-            Pelicula clave = mapa.keySet().stream()
+            List<Pelicula> lista = JsonManager.cargarPeliculas();
+            Pelicula encontrada = lista.stream()
                     .filter(p -> p.getid().equalsIgnoreCase(pelicula.getid()))
                     .findFirst()
                     .orElseThrow(() -> new PeliculaException("Película no encontrada."));
-            int vis = mapa.remove(clave);
-            Pelicula actualizada = new Pelicula(
-                    clave.getid(), nuevoTitulo, clave.getdirector(),
-                    clave.getduracion(), clave.getfechaPublicacion()
-            );
-            mapa.put(actualizada, vis);
-            JsonManager.guardarPeliculas(mapa);
+            encontrada.setTitulo(nuevoTitulo);
+            JsonManager.guardarPeliculas(lista);
         } catch (PeliculaException e) {
             throw e;
         } catch (Exception e) {
@@ -81,18 +70,13 @@ public class PeliculaService {
             throw new PeliculaException("La fecha no puede estar vacía.");
         }
         try {
-            Map<Pelicula, Integer> mapa = JsonManager.cargarPeliculas();
-            Pelicula clave = mapa.keySet().stream()
+            List<Pelicula> lista = JsonManager.cargarPeliculas();
+            Pelicula encontrada = lista.stream()
                     .filter(p -> p.getid().equalsIgnoreCase(pelicula.getid()))
                     .findFirst()
                     .orElseThrow(() -> new PeliculaException("Película no encontrada."));
-            int vis = mapa.remove(clave);
-            Pelicula actualizada = new Pelicula(
-                    clave.getid(), clave.getitulo(), clave.getdirector(),
-                    clave.getduracion(), nuevaFecha
-            );
-            mapa.put(actualizada, vis);
-            JsonManager.guardarPeliculas(mapa);
+            encontrada.setfechaPublicacion(nuevaFecha);
+            JsonManager.guardarPeliculas(lista);
         } catch (PeliculaException e) {
             throw e;
         } catch (Exception e) {
@@ -100,26 +84,44 @@ public class PeliculaService {
         }
     }
 
-    // ── Operaciones de visualizaciones ────────────────
-
+    // Añade una visualización a la película para el usuario actual
     public void agregarVisualizacion(Pelicula pelicula, Persona usuario) throws PeliculaException {
         try {
-            JsonManager.guardarVisualizacionUsuario(pelicula, usuario);
-            Map<Pelicula, Integer> mapa = JsonManager.cargarPeliculas();
-            Pelicula clave = mapa.keySet().stream()
-                    .filter(p -> p.getid().equalsIgnoreCase(pelicula.getid()))
-                    .findFirst()
-                    .orElseThrow(() -> new PeliculaException("Película no encontrada."));
-            mapa.put(clave, mapa.get(clave) + 1);
-            JsonManager.guardarPeliculas(mapa);
-        } catch (PeliculaException e) {
-            throw e;
+            Map<String, Integer> visualizaciones =
+                    JsonManager.cargarVisualizacionesUsuario(usuario);
+            visualizaciones.merge(pelicula.getid(), 1, Integer::sum);
+            JsonManager.guardarVisualizacionesUsuario(usuario, visualizaciones);
         } catch (Exception e) {
             throw new PeliculaException("Error al registrar visualización: " + e.getMessage());
         }
     }
 
+    // Devuelve Map<Pelicula, Integer> con las visualizaciones del usuario actual
     public Map<Pelicula, Integer> getVisualizaciones(Persona usuario) {
-        return JsonManager.cargarPeliculas();
+        List<Pelicula> peliculas = JsonManager.cargarPeliculas();
+        Map<String, Integer> visUsuario = JsonManager.cargarVisualizacionesUsuario(usuario);
+        Map<Pelicula, Integer> resultado = new LinkedHashMap<>();
+        for (Pelicula p : peliculas) {
+            resultado.put(p, visUsuario.getOrDefault(p.getid(), 0));
+        }
+        return resultado;
+    }
+
+    private void validar(Pelicula p) throws PeliculaException {
+        if (p.getid() == null || !p.getid().matches("[A-Za-z]{3}\\d{2}")) {
+            throw new PeliculaException("El ID debe tener 3 letras y 2 números. Ej: ABC01");
+        }
+        if (p.getitulo() == null || p.getitulo().isBlank()) {
+            throw new PeliculaException("El título no puede estar vacío.");
+        }
+        if (p.getdirector() == null || p.getdirector().isBlank()) {
+            throw new PeliculaException("El director no puede estar vacío.");
+        }
+        if (p.getduracion() == null || p.getduracion() <= 0) {
+            throw new PeliculaException("La duración debe ser mayor que 0.");
+        }
+        if (p.getfechaPublicacion() == null) {
+            throw new PeliculaException("La fecha no puede estar vacía.");
+        }
     }
 }
