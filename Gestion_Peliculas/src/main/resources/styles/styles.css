@@ -73,7 +73,8 @@
 }
 
 .button-danger:pressed {
-    -fx-background-color: #c73333;
+    -fx-background-color: #1f6391;
+    -fx-background-color: transparent;
 }
 
 /* =========================
@@ -82,16 +83,17 @@
 
 .boton-link {
     -fx-background-color: transparent;
-    -fx-text-fill: #2563eb;
+    -fx-text-fill: #3498db;
     -fx-font-size: 12px;
     -fx-font-weight: normal;
     -fx-underline: true;
     -fx-cursor: hand;
-    -fx-padding: 4 0;
+    -fx-padding: 4 0 4 0;
 }
 
 .boton-link:hover {
-    -fx-text-fill: #1d4ed8;
+    -fx-text-fill: #2980b9;
+    -fx-background-color: transparent;
 }
 
 /* =========================
