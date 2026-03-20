@@ -170,6 +170,9 @@ public class PeliculaController {
         }
     }
 
+    /**
+     * Limpia todos los campos del formulario de agregar película.
+     */
     private void limpiarCampos() {
         txtId.clear();
         txtTitulo.clear();
@@ -178,6 +181,10 @@ public class PeliculaController {
         dpFecha.setValue(null);
     }
 
+    /**
+     * Muestra un Alert de error con el mensaje indicado.
+     * @param mensaje texto a mostrar
+     */
     private void mostrarError(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");

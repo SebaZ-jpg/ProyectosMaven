@@ -31,6 +31,11 @@ public class InicioController {
                     txtPassword.getText().trim()
             );
 
+            /**
+             * Crea e inicializa el servicio de películas con el usuario de la sesión activa,
+             * carga la vista de gestión de películas y le inyecta el servicio al controlador
+             * antes de mostrarla en el mismo Stage.
+             */
             PeliculaService peliculaService = new PeliculaService();
             peliculaService.inicializar(usuario);
 

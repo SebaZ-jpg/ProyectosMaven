@@ -54,6 +54,10 @@ public class RegistroController {
         }
     }
 
+    /**
+     * Muestra un Alert de error con el mensaje indicado.
+     * @param mensaje texto a mostrar
+     */
     private void mostrarError(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
@@ -62,6 +66,10 @@ public class RegistroController {
         alert.showAndWait();
     }
 
+    /**
+     * Muestra un Alert informativo con el mensaje indicado.
+     * @param mensaje texto a mostrar
+     */
     private void mostrarInfo(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Éxito");

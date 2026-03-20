@@ -23,7 +23,6 @@ public class PeliculaDTO implements Serializable {
      * Constructor sin visualizaciones, las inicializa a 0.
      * Usado por Pelicula.toDTO()
      */
-
     public PeliculaDTO(String id, String titulo, String director,
                        Integer duracion, LocalDate fechaPublicacion) {
 
@@ -34,7 +33,6 @@ public class PeliculaDTO implements Serializable {
      * Constructor completo con visualizaciones.
      * Usado por  JsonManager al guardar y cargar el JSON.
      */
-
     public PeliculaDTO(String id, String titulo, String director, Integer duracion, LocalDate fechaPublicacion, Integer visualizaciones) {
         this.id = id;
         this.titulo = titulo;

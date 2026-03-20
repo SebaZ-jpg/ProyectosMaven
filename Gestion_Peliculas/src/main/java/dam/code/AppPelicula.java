@@ -46,10 +46,18 @@ public class AppPelicula extends Application {
         primaryStage.setScene(new Scene(root));
     }
 
+    /**
+     * Devuelve la instancia compartida de RegistroService.
+     * @return instancia de RegistroService
+     */
     public static RegistroService getRegistroService() {
         return registroService;
     }
 
+    /**
+     * Punto de entrada de la aplicación. Lanza el ciclo de vida de JavaFX.
+     * @param args argumentos de línea de comandos
+     */
     public static void main(String[] args) {
         launch(args);
     }

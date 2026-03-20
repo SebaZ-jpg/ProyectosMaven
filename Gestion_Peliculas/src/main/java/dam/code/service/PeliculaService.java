@@ -99,6 +99,11 @@ public class PeliculaService implements PeliculaRepository {
         return visualizaciones;
     }
 
+    /**
+     * Incrementa en 1 la visualización de la película con el ID indicado.
+     * @param id identificador de la película
+     * @throws PeliculaException si no existe ninguna película con ese ID
+     */
     @Override
     public void agregarVisualizacion(String id) throws PeliculaException {
         Pelicula encontrada = buscarPorId(id);

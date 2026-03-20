@@ -73,20 +73,38 @@ public class RegistroService {
         throw new PersonaException("DNI o contraseña incorrectos.");
     }
 
+    /**
+     * Comprueba si existen usuarios registrados en el sistema.
+     * @return true si hay al menos un usuario, false si no
+     */
     public boolean existenUsuarios() {
         return registroDAO.existenUsuarios();
     }
 
+    /**
+     * Devuelve el usuario que ha iniciado sesión actualmente.
+     * @return Persona con la sesión activa, o null si no hay sesión
+     */
     public Persona getUsuarioActual() {
         return usuarioActual;
     }
 
+    /**
+     * Valida que el DNI tenga el formato correcto: 8 números y 1 letra.
+     * @param dni DNI a validar
+     * @throws PersonaException si el formato es incorrecto
+     */
     private void validarDni(String dni) throws PersonaException {
         if (!dni.matches("\\d{8}[A-Za-z]")) {
             throw new PersonaException("DNI inválido. Formato: 8 números y 1 letra.");
         }
     }
 
+    /**
+     * Valida que el email tenga un formato válido.
+     * @param email email a validar
+     * @throws PersonaException si el formato es incorrecto
+     */
     private void validarEmail(String email) throws PersonaException {
         if (!email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
             throw new PersonaException("Email inválido.");
