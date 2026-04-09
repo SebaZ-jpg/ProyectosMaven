@@ -14,6 +14,8 @@
         <module>LibreriaMVC</module>
         <module>JavaFX</module>
         <module>Gestion_Peliculas</module>
+        <module>JDBC</module>
+        <module>cinesaJDBC</module>
     </modules>
 
     <properties>
