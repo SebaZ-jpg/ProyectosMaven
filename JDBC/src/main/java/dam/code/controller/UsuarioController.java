@@ -15,10 +15,6 @@ public class UsuarioController {
 
     private final UsuarioService service = new UsuarioService();
 
-    //@FXML significa que estos elementos están definidos
-    // en un archivo .fxml (el diseño visual de la pantalla) y JavaFX
-    // los conecta automáticamente con estas variables.
-
     @FXML private TextField txtNombre;
     @FXML private TextField txtEmail;
 
@@ -28,7 +24,7 @@ public class UsuarioController {
     @FXML private TableColumn<Usuario, String> colEmail;
 
     @FXML
-    public void initialize() {
+    private void initialize() {
         colId.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getId()).asObject());
         colNombre.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getNombre()));
         colEmail.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getEmail()));
@@ -37,30 +33,27 @@ public class UsuarioController {
     }
 
     @FXML
-    public void guardarUsuario() {
-        try {
+    public void guardarUsuario(){
+        try{
             service.crearUsuario(txtNombre.getText(), txtEmail.getText());
             limpiarCampos();
             cargarUsuarios();
-        } catch (Exception ex) {
-            mostrarError(ex.getMessage());
+
+        } catch (Exception e){
+            mostrarError(e.getMessage());
         }
     }
 
-    //Pide todos los usuarios al Service y los mete en la tabla. observableArrayList
-    // es una lista especial de JavaFX que actualiza la tabla automáticamente cuando cambia.
-    private void cargarUsuarios() {
+    private void cargarUsuarios(){
         tablaUsuarios.setItems(FXCollections.observableArrayList(service.listarUsuarios()));
     }
 
-    //limpiarCampos() vacía los TextField tras guardar, y mostrarError() muestra una
-    // ventana emergente de error con el mensaje recibido.
-    private void limpiarCampos() {
+    private void limpiarCampos(){
         txtNombre.clear();
         txtEmail.clear();
     }
 
-    private void mostrarError(String mensaje) {
+    private void mostrarError(String mensaje){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
         alert.setContentText(mensaje);
