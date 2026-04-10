@@ -10,4 +10,7 @@ public class PeliculaService {
 
     public void addVisualizacion(int id, Pelicula pelicula) {
     }
+
+    public void agregarPelicula(Pelicula pelicula) {
+    }
 }

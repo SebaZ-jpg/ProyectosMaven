@@ -4,28 +4,29 @@ import dam.code.exceptions.PeliculaException;
 import dam.code.models.Pelicula;
 import dam.code.models.Usuario;
 import dam.code.service.PeliculaService;
+import dam.code.service.UsuarioService;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 public class PeliculasController {
 
     private Usuario usuario;
     private PeliculaService service;
 
-    @FXML private Label lblUsuario;
-    @FXML
-    private TextField txtTitulo;
-    @FXML
-    private TextField txtDirector;
-    @FXML
-    private TextField txtDuracion;
-    @FXML
-    private DatePicker txtFecha;
+    @FXML private TextField txtTitulo;
+    @FXML private TextField txtDirector;
+    @FXML private TextField txtDuracion;
+    @FXML private DatePicker txtFecha;
 
     @FXML private TableView<Pelicula> tablaPeliculas;
     @FXML private TableColumn<Pelicula, Integer> colId;
@@ -105,6 +106,82 @@ public class PeliculasController {
                 }
             });
             return row;
+        });
+    }
+
+    @FXML public void addPelicula(){
+        try {
+            if(!validarCampos()) throw new PeliculaException("Todos los campos son obligatorios");
+            Pelicula pelicula = new Pelicula(
+                    txtTitulo.getText(),
+                    txtDirector.getText(),
+                    Integer.parseInt(txtDuracion.getText()),
+                    LocalDate.parse(txtFecha.getValue().toString())
+            );
+            service.agregarPelicula(pelicula);
+            tablaPeliculas.setItems(service.obtenerPeliculas());
+            limpiarCampos();
+        } catch(PeliculaException | DateTimeParseException e) {
+            mostrarError(e.getMessage());
+        } catch (NumberFormatException e){
+            mostrarError("La duracion tiene que ser un numero valido");
+        }
+    }
+
+    private void limpiarCampos() {
+        txtTitulo.clear();
+        txtDirector.clear();
+        txtDuracion.clear();
+        txtFecha.setValue(null);
+    }
+
+    private boolean validarCampos() {
+        return !txtTitulo.getText().isBlank()
+                && !txtDirector.getText().isBlank()
+                && !txtDuracion.getText().isBlank()
+                && txtFecha.getValue() != null;
+    }
+
+    @FXML public void visualizaciones() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Visualizaciones_view.fxml"));
+            Parent root = loader.load();
+            VisualizacionController controller = loader.getController();
+            controller.setUsuario(usuario);
+            controller.setPeliculaService(service);
+
+            Stage stage = (Stage) txtTitulo.getScene().getWindow();
+            stage.setResizable(false);
+            stage.setWidth(800);
+            stage.setHeight(600);
+            stage.setScene(new Scene(root));
+        } catch (Exception e) {
+            mostrarError(e.getMessage());
+        }
+    }
+
+    @FXML public void cerrarSesion() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Cerrar Sesion");
+        alert.setHeaderText("¿Seguro que desea cerrar sesion?");
+        alert.setContentText("Se cerrará la sesión actual");
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Inicio_view.fxml"));
+                    Parent root = loader.load();
+                    InicioController controller = loader.getController();
+                    controller.setUsuarioService(new UsuarioService());
+
+                    Stage stage = (Stage) txtTitulo.getScene().getWindow();
+                    stage.setResizable(false);
+                    stage.setWidth(800);
+                    stage.setHeight(600);
+                    stage.setScene(new Scene(root));
+                } catch (Exception e) {
+                    mostrarError(e.getMessage());
+                }
+            }
         });
     }
 
