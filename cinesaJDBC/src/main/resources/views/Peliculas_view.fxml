@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      stylesheets="/styles/styles.css"
+      fx:controller="dam.code.controller.PeliculaController"
+      spacing="10"
+      alignment="CENTER">
+
+    <label text="Gestion de Peliculas" styleClass="tittle"/>
+    <Hbox spacing="10" alignment="CENTER">
+        <Label text="Usuario" fx:id="lblUsuario"/>
+        <Button text="Cerrar sesion" onAction="#cerrarSesion" styleClass="button-close"/>
+    </Hbox>
+
+    <VBox spacing="10" alignment="CENTER">
+        <Hbox spacing="10" alignment="CENTER">
+            <TextFiled fx:id="txtTitulo" promptText="Titulo"/>
+            <TextFiled fx:id="txtDirector" promptText="Director"/>
+            <TextFiled fx:id="txtDuracion" promptText="Duracion"/>
+            <DatePicker fx:id="txtFecha" promptText="Fecha Publ."/>
+            <Button text="Añadir Pelicula" onAction="#addPelicula"/>
+        </Hbox>
+        <Button text="Visualizaciones" onAction="#visualizaciones" styleClass="btn-secondary"/>
+    </VBox>
+
+    <TableView fx:id="tablaPeliculas" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colId" text="Id"/>
+            <TableColumn fx:id="colTitulo" text="Titulo"/>
+            <TableColumn fx:id="colDirector" text="Director"/>
+            <TableColumn fx:id="colDuracion" text="Duracion"/>
+            <TableColumn fx:id="colFecha" text="Fecha"/>
+        </columns>
+    </TableView>
+
+</VBox>

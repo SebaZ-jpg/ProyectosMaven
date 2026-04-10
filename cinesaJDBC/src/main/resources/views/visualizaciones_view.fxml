@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      stylesheets="/styles/styles.css"
+      fx:controller="dam.code.controller.VisualizacionController"
+      spacing="10"
+      alignment="CENTER">
+
+    <label text="Gestion de Peliculas" styleClass="tittle"/>
+
+
+    <Hbox spacing="10" alignment="CENTER">
+        <Hbox spacing="10" alignment="CENTER">
+            <Label text="Usuario" fx:id="lblUsuario"/>
+            <Button text="Cerrar sesion" onAction="#cerrarSesion" styleClass="button-close"/>
+        </Hbox>
+
+        <Button text="Peliculas" onAction="#peliculas" styleClass="btn-secondary"/>
+    </Hbox>
+
+    <TableView fx:id="tablaVisualizaciones" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colId" text="Id"/>
+            <TableColumn fx:id="colTitulo" text="Titulo"/>
+            <TableColumn fx:id="colDirector" text="Director"/>
+            <TableColumn fx:id="colDuracion" text="Duracion"/>
+            <TableColumn fx:id="colFecha" text="Fecha"/>
+            <TableColumn fx:id="colVisualizaciones" text="Views"/>
+        </columns>
+    </TableView>
+
+</VBox>

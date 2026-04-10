@@ -14,7 +14,6 @@
 
     <TextField fx:id="txtDni" promptText="DNI" />
     <TextField fx:id="txtNombre" promptText="Nombre" />
-    <TextField fx:id="txtApellido" promptText="Apellido" />
     <TextField fx:id="txtEmail" promptText="Email" />
     <PasswordField fx:id="txtPassword" promptText="Contraseña"/>
     <PasswordField fx:id="txtPasswordRepit" promptText="Repetir contraseña"/>
