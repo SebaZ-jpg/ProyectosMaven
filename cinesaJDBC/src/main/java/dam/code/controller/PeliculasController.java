@@ -27,7 +27,7 @@ public class PeliculasController {
     @FXML private TextField txtDirector;
     @FXML private TextField txtDuracion;
     @FXML private DatePicker txtFecha;
-
+    @FXML private Label lblUsuario;
     @FXML private TableView<Pelicula> tablaPeliculas;
     @FXML private TableColumn<Pelicula, Integer> colId;
     @FXML private TableColumn<Pelicula, String> colTitulo;
