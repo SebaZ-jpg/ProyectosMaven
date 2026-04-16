@@ -61,7 +61,7 @@ public class PeliculaDAOImpl implements PeliculaDAO {
     public List<Pelicula> obtenerPeliculasPorUsuario(int idUsuario) throws PeliculaException {
         List<Pelicula> peliculas = new ArrayList<>();
         String sql = """
-                |SELECT p.id, p.titulo, p.director, p.duracion, p.fecha_publicacion,
+                SELECT p.id, p.titulo, p.director, p.duracion, p.fecha_publicacion,
                     COUNT(v.id_pelicula) AS visualizaciones
                 FROM peliculas p
                 INNER JOIN visualizaciones v ON p.id = v.id_pelicula

@@ -38,7 +38,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
         String sql = "SELECT * FROM usuarios WHERE dni = ? AND password = ?";
 
         try(Connection con = DatabaseConfig.getConnection();
-            PreparedStatement ps = con.prepareStatement(sql);{
+            PreparedStatement ps = con.prepareStatement(sql)){
                 ps.setString(1, dni);
                 ps.setString(2, password);
 
@@ -51,12 +51,12 @@ public class UsuarioDAOImpl implements UsuarioDAO {
                             rs.getString("nombre"),
                             rs.getString("email")
                     );
+                } else {
+                    throw new UsuarioException("Credenciales incorrectas");
                 }
 
         } catch (SQLException e) {
             throw new UsuarioException(e.getMessage());
         }
-
-        return null;
     }
 }

@@ -9,17 +9,17 @@
       spacing="10"
       alignment="CENTER">
 
-    <label text="Gestion de Peliculas" styleClass="tittle"/>
+    <Label text="Gestion de Peliculas" styleClass="tittle"/>
 
 
-    <Hbox spacing="10" alignment="CENTER">
-        <Hbox spacing="10" alignment="CENTER">
+    <HBox spacing="10" alignment="CENTER">
+        <HBox spacing="10" alignment="CENTER">
             <Label text="Usuario" fx:id="lblUsuario"/>
             <Button text="Cerrar sesion" onAction="#cerrarSesion" styleClass="button-close"/>
-        </Hbox>
+        </HBox>
 
         <Button text="Peliculas" onAction="#peliculas" styleClass="btn-secondary"/>
-    </Hbox>
+    </HBox>
 
     <TableView fx:id="tablaVisualizaciones" VBox.vgrow="ALWAYS">
         <columns>

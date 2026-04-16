@@ -41,7 +41,7 @@ public class InicioController {
         try{
             Usuario usuario = service.login(dni, password);
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Visualizaciones_view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/visualizaciones_view.fxml"));
             Parent root = loader.load();
             VisualizacionController controller = loader.getController();
             controller.setUsuario(usuario);
@@ -60,7 +60,7 @@ public class InicioController {
     @FXML
     public void registro(){
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Registro_view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Registro_view.fxml"));
             Parent root = loader.load();
             RegistroController controller = loader.getController();
             controller.setUsiarioService(service);

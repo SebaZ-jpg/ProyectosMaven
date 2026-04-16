@@ -144,7 +144,7 @@ public class PeliculasController {
 
     @FXML public void visualizaciones() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Visualizaciones_view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Visualizaciones_view.fxml"));
             Parent root = loader.load();
             VisualizacionController controller = loader.getController();
             controller.setUsuario(usuario);
@@ -168,7 +168,7 @@ public class PeliculasController {
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Inicio_view.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Inicio_view.fxml"));
                     Parent root = loader.load();
                     InicioController controller = loader.getController();
                     controller.setUsuarioService(new UsuarioService());

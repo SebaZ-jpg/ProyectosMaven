@@ -65,7 +65,7 @@ public class RegistroController {
 
     @FXML private void inicio() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/inicio_view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/inicio_view.fxml"));
 
             Parent root = loader.load();
 

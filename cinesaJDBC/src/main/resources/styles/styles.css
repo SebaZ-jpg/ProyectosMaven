@@ -119,25 +119,3 @@
 .hbox {
     -fx-padding: 5 0 5 0;
 }
-
-/* =========================
-   LINK BUTTON
-   ========================= */
-
-.btn-secondary {
-    -fx-background-color: transparent;
-    -fx-border-color: transparent;
-    -fx-text-fill: #3498db;
-    -fx-font-weight: normal;
-    -fx-padding: 2;
-    -fx-cursor: hand;
-}
-
-.btn-secondary:hover {
-    -fx-underline: true;
-    -fx-text-fill: white;
-}
-
-.btn-secondary:pressed {
-    -fx-text-fill: #1f6391;
-}
