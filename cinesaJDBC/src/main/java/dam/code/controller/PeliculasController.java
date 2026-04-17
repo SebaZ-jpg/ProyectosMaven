@@ -63,7 +63,7 @@ public class PeliculasController {
             @Override
             public void updateItem(LocalDate item, boolean empty) {
                 super.updateItem(item, empty);
-                if (item != null && item.isBefore(LocalDate.now())) {
+                if (item != null && item.isAfter(LocalDate.now())) {
                     setDisable(true);
                     setStyle("-fx-background-color: #d0d0d0;");
                 }

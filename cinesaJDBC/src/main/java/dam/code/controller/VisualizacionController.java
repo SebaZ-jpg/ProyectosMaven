@@ -52,6 +52,8 @@ public class VisualizacionController {
         colDuracion.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getDuracion()).asObject());
         colFecha.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getFecha_publicacion()));
         colVisualizaciones.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getVisualizaciones()).asObject());
+
+        setVisualizaciones();
     }
 
     @FXML private void prefWidthColumns(){
@@ -62,6 +64,8 @@ public class VisualizacionController {
         colDirector.prefWidthProperty().bind(tablaVisualizaciones.widthProperty().multiply(0.30));
         colDuracion.prefWidthProperty().bind(tablaVisualizaciones.widthProperty().multiply(0.15));
         colFecha.prefWidthProperty().bind(tablaVisualizaciones.widthProperty().multiply(0.15));
+
+
     }
 
     private void setVisualizaciones(){
@@ -131,7 +135,7 @@ public class VisualizacionController {
 
                     Stage stage = (Stage) tablaVisualizaciones.getScene().getWindow();
                     stage.setResizable(false);
-                    stage.setWidth(800);
+                    stage.setWidth(400);
                     stage.setHeight(600);
                     stage.setScene(new Scene(root));
                 } catch (Exception e) {

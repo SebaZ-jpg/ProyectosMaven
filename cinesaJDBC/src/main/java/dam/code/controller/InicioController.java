@@ -2,6 +2,7 @@ package dam.code.controller;
 
 import dam.code.exceptions.PeliculaException;
 import dam.code.exceptions.UsuarioException;
+import dam.code.models.Sesion;
 import dam.code.models.Usuario;
 import dam.code.service.PeliculaService;
 import dam.code.service.UsuarioService;
@@ -41,6 +42,8 @@ public class InicioController {
         try{
             Usuario usuario = service.login(dni, password);
 
+            Sesion.setUsuario(usuario);
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/visualizaciones_view.fxml"));
             Parent root = loader.load();
             VisualizacionController controller = loader.getController();
@@ -49,7 +52,7 @@ public class InicioController {
 
             Stage stage = (Stage) txtDni.getScene().getWindow();
             stage.setResizable(false);
-            stage.setWidth(800);
+            stage.setWidth(400);
             stage.setHeight(600);
             stage.setScene(new Scene(root));
         } catch (PeliculaException | IOException | UsuarioException e) {
@@ -66,7 +69,7 @@ public class InicioController {
             controller.setUsiarioService(service);
             Stage stage = (Stage) txtDni.getScene().getWindow();
             stage.setResizable(false);
-            stage.setWidth(800);
+            stage.setWidth(400);
             stage.setHeight(600);
             stage.setScene(new Scene(root));
         } catch (Exception e){

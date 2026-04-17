@@ -2,15 +2,14 @@ package dam.code.controller;
 
 import dam.code.exceptions.UsuarioException;
 import dam.code.models.Usuario;
+import dam.code.models.utils.Rol;
 import dam.code.service.UsuarioService;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 public class RegistroController {
@@ -21,11 +20,18 @@ public class RegistroController {
     @FXML private PasswordField txtPassword;
     @FXML private PasswordField txtPasswordRepit;
 
+    @FXML private ComboBox<Rol> comboRol;
+
     @FXML private Label lblMensaje;
+
     private UsuarioService service;
 
     public void setUsiarioService(UsuarioService service) {
         this.service = service;
+    }
+
+    @FXML private void initialize() {
+        comboRol.setItems(FXCollections.observableArrayList(Rol.values()));
     }
 
     @FXML private void registrarUsuario() {
@@ -39,7 +45,8 @@ public class RegistroController {
                 Usuario usuario = new Usuario(
                         txtDni.getText(),
                         txtNombre.getText(),
-                        txtEmail.getText()
+                        txtEmail.getText(),
+                        comboRol.getValue()
                 );
                 service.registrar(usuario,txtPassword.getText());
                 lblMensaje.setText("Usuario registrado con exito");
@@ -61,6 +68,7 @@ public class RegistroController {
         txtEmail.setText("");
         txtPassword.setText("");
         txtPasswordRepit.setText("");
+        comboRol.setValue(null);
     }
 
     @FXML private void inicio() {
@@ -74,7 +82,7 @@ public class RegistroController {
 
             Stage stage = (Stage) txtDni.getScene().getWindow();
             stage.setResizable(false);
-            stage.setWidth(800);
+            stage.setWidth(400);
             stage.setHeight(600);
             stage.setScene(new Scene(root));
 
@@ -88,7 +96,8 @@ public class RegistroController {
                 && !txtNombre.getText().isEmpty()
                 && !txtEmail.getText().isEmpty()
                 && !txtPassword.getText().isEmpty()
-                && !txtPasswordRepit.getText().isEmpty();
+                && !txtPasswordRepit.getText().isEmpty()
+                && comboRol.getValue() !=null;
     }
 
     private boolean validarPassword() {

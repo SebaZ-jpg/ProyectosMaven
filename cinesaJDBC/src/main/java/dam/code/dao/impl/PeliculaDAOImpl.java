@@ -24,6 +24,8 @@ public class PeliculaDAOImpl implements PeliculaDAO {
             ps.setInt(3, pelicula.getDuracion());
             ps.setDate(4, Date.valueOf(pelicula.getFecha_publicacion()));
 
+            ps.executeUpdate();
+
         } catch (SQLException e){
             throw new PeliculaException(e.getMessage());
         }
